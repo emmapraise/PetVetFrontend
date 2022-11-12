@@ -199,7 +199,7 @@ function HomePage(props) {
                 >
                   <option value="All">All Veterinary Services</option>
                   <option value="electronics">Animal Welfare</option>
-                  <option value="electronics">Emergency   care</option>
+                  <option value="electronics">Emergency care</option>
                   <option value="jewelery">Clinical Pharmacology</option>
                   <option value="men's clothing">Dentistry</option>
                   <option value="women's clothing">Dermatology</option>
@@ -264,8 +264,8 @@ function HomePage(props) {
         <div className="deal-of-the-day">
           <div className="dotd-heading">
             <div className="compact">
-              <p className="red bold">DEAL OF THE DAY</p>
-              <p className="gray">Shop on a budget</p>
+              <p className="red bold">Featured</p>
+              <p className="gray">Featured Vet Clinics</p>
             </div>
           </div>
           <div className="dotd-cards ">
@@ -284,34 +284,10 @@ function HomePage(props) {
           </div>
         </div>
 
-        {/* <div className="top-deals">
-          <div className="flex td-heading">
-            <div className="compact">
-              <p className="bold text">TOP DEALS</p>
-            </div>
-          </div>
-          <div className="td-circles">
-            <div className=" grid">
-              {search(topdeals).map((item) => (
-                <TopDealsCircle
-                key={item.id}
-                  img={<img src={item.image} alt="shoes" />}
-                  title={item.title}
-                />
-              ))}
-            </div>
-            <div className="flex see-more see-more-white">
-              <Link className="bold" to="/products/topdeals">
-                See more
-              </Link>
-            </div>
-          </div>
-        </div> */}
-
         <div className="hot-deals">
           <div className="flex hd-heading flex">
             <div className="compact">
-              <p className="bold text"> HOT DEALS</p>
+              <p className="bold text"> TOP VET CLINIC</p>
             </div>
           </div>
 
@@ -321,7 +297,7 @@ function HomePage(props) {
           ) : (
             <CardCategory className="wrapper">
               <div className="cat1 categories">
-                <p className="title bold">Electronics</p>
+                <p className="title bold">Animal Welfare</p>
                 <div className=" scrolly">
                   <div className="flex content">
                     {search(items).map((item) =>
@@ -349,7 +325,7 @@ function HomePage(props) {
               </div>
 
               <div className="cat2 categories">
-                <p className="title bold">Computers</p>
+                <p className="title bold">Emergency Care</p>
                 <div className=" scrolly">
                   <div className="flex content">
                     {search(items).map((item) =>
@@ -377,7 +353,7 @@ function HomePage(props) {
               </div>
 
               <div className="cat3 categories">
-                <p className="title bold">Cars</p>
+                <p className="title bold">Clinical Pharmacology</p>
                 <div className=" scrolly">
                   <div className="flex content">
                     {search(items).map((item) =>
@@ -405,7 +381,7 @@ function HomePage(props) {
               </div>
 
               <div className="cat4 categories">
-                <p className="title bold">Furnitures</p>
+                <p className="title bold">Dentistry</p>
                 <div className=" scrolly">
                   <div className="flex content">
                     {search(items).map((item) =>
@@ -433,7 +409,7 @@ function HomePage(props) {
               </div>
 
               <div className="cat5 categories">
-                <p className="title bold">Phones & Accesories</p>
+                <p className="title bold">Dermatology</p>
                 <div className=" scrolly">
                   <div className="flex content">
                     {search(items).map((item) =>
@@ -461,7 +437,7 @@ function HomePage(props) {
               </div>
 
               <div className="cat6 categories">
-                <p className="title bold">Others</p>
+                <p className="title bold">Nutrition</p>
                 <div className=" scrolly">
                   <div className="flex content">
                     {search(items).map((item) =>

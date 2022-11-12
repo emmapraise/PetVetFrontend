@@ -343,21 +343,21 @@ function Purchases(props) {
       {purcchaseItems.length > 0 ? (
         <DashboardLayout navText="My Purchases">
           <>
-            <p className="items">Purchase(s) {`(${purcchaseItems.length} Items)`}</p>
+            <p className="items">Appointment(s) {`(${purcchaseItems.length} Items)`}</p>
             <>
               {" "}
               <div className="titles">
                 <div className="flex first">
                   {" "}
-                  <p>ITEMS</p>
+                  <p>VET CLINIC</p>
                 </div>
                 <div className="grid">
                   <div className="flexy flex">
-                    <p>QUANTITY</p>
-                    <p>UNIT PRICE</p>
-                    <p>SUB TOTAL</p>
+                    <p>PET</p>
+                    <p>DIAGONISIS</p>
+                    <p>AMOUNT</p>
                   </div>
-                  <p>PAYMENT</p>
+                  <p>STATUS</p>
                 </div>
               </div>
               {purcchaseItems.map(({ name, price, img, paymentType }, index) => (
@@ -441,20 +441,7 @@ function Purchases(props) {
                   </div>
                 </div>
               ))}
-              <div className="buttons j-btw">
-                <div className="total flex">
-                  <p className="text">Amount Paid:</p>
-                  <p className="amount">NGN66,250</p>
-                </div>
-                <div className="total flex">
-                  <p className="text">Balance:</p>
-                  <p className="amount">NGN66,250</p>
-                </div>
-                <div className="total flex">
-                  <p className="text">Total:</p>
-                  <p className="amount">NGN66,250</p>
-                </div>
-              </div>
+              
             </>
             <Link to="/emptyPurchases">emptyPurchases</Link>
           </>

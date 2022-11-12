@@ -10,7 +10,7 @@ import ProductDescription from "./pages/products/ProductDescription";
 import Phones_Accessories from "./pages/products/Phones_Accessories";
 import Others from "./pages/products/Others";
 import TopDeals from "./pages/products/TopDeals";
-import Purchases from "./pages/dashboard/Purchases";
+import Appointments from "./pages/dashboard/Appointments";
 import emptyPurchases from "./pages/dashboard/emptyPurchase";
 import Cart from "./pages/Cart";
 import FilledCart from "./pages/FilledCart";
@@ -20,9 +20,7 @@ import ForgotPassword from "./pages/authentication/ForgotPassword";
 import Checkout from "./pages/payments/Checkout";
 import DirectDeposit from "./pages/payments/DirectDeposit";
 import Dashboard from "./pages/dashboard";
-import Messages from "./pages/dashboard/Messages";
-import Referrals from "./pages/dashboard/Referrals";
-import Wallet from "./pages/dashboard/Wallet";
+import Diagnoses from "./pages/dashboard/Diagnoses";
 import Profile from "./pages/dashboard/Profile";
 import APIContextProvider from "./context/apiContext";
 
@@ -55,14 +53,12 @@ function App() {
               <Route path="/forgot-password" component={ForgotPassword} />
               <Route path="/cart" component={Cart} />
               <Route path="/filledCart" component={FilledCart} />
-              <Route path="/purchases" component={Purchases} />
+              <Route path="/appointments" component={Appointments} />
               <Route path="/emptyPurchases" component={emptyPurchases} />
               <Route path="/checkout" component={Checkout} />
               <Route path="/direct-deposit" component={DirectDeposit} />
               <Route path="/dashboard" component={Dashboard} />
-              <Route path="/message" component={Messages} />
-              <Route path="/referrals" component={Referrals} />
-              <Route path="/wallet" component={Wallet} />
+              <Route path="/diagnoses" component={Diagnoses} />
               <Route path="/profile" component={Profile} />
 
               {/* <Route

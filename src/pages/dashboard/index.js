@@ -113,7 +113,7 @@ function index(props) {
             </Link>
             <Link to="/referrals">
             <div className="small-card elevate first j-btw flex j-btw">
-              <p className="text bold">My Referrals</p>
+              <p className="text bold">My Pets</p>
               <p className="text ">10</p>
             </div>
             </Link>
@@ -142,13 +142,10 @@ function index(props) {
         </div>
 
         <div className="purchase-lists">
-          <p className="title bold">My Purchases</p>
+          <p className="title bold">My Pets</p>
           <div className="purchase-list">
             <div className="scroll flex">
-              <div className="item"></div>
-              <div className="item"></div>
-              <div className="item"></div>
-              <div className="item"></div>
+              <div className="item">Jack</div>
               <div className="item"></div>
               <div className="item"></div>
               <div className="item"></div>
