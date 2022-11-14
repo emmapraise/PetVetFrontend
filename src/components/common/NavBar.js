@@ -248,8 +248,8 @@ function NavBar({ searchInput, modalRegister, modalLogin }) {
               modalRegister
             ) : (
               <>
-                <Link to="/login">
-                  <button className="btn m-10">Login</button>
+                <Link to="/register">
+                  <button className="btn m-10">Register</button>
                 </Link>
               </>
             )}

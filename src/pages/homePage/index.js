@@ -30,6 +30,7 @@ import Modal from "../../components/common/Modal";
 import Register from "../authentication/Register";
 import Login from "../authentication/Login";
 import { withRouter } from 'react-router-dom';
+import axios from "axios";
 
 
 function HomePage(props) {
@@ -47,6 +48,14 @@ function HomePage(props) {
 // function redirectToLogin() {
 // props.history.push('/login');
 // }
+const getOwners = () => {
+  axios.get(`http://localhost:8282/api/vet/all`)
+  .then(response => {
+    
+    console.log(response.data);
+  })
+}
+getOwners();
   const { data, isLoading } = useAPI();
   const items = data && data;
 

@@ -8,6 +8,7 @@ import view from "../../assets/view.png";
 import mark from "../../assets/spec.png";
 import InputField from "../../components/common/input/InputField";
 import SelectInput from "../../components/common/input/SelectInput";
+import axios from "axios";
 
 const optionPet = [
   { value: "1", text: "Bingo" },
@@ -175,26 +176,38 @@ const handleChange = (prop) => (event) => {
 };
 
   // Fetch data
-  useEffect(() => {
-    fetch(`https://fakestoreapi.com/products/${match.params.id}`)
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          setIsLoading(true);
-          setData(result);
-          console.log(data && data);
-        },
+  // useEffect(() => {
+  //   fetch(`https://fakestoreapi.com/products/${match.params.id}`)
+  //     .then((res) => res.json())
+  //     .then(
+  //       (result) => {
+  //         setIsLoading(true);
+  //         setData(result);
+  //         console.log(data && data);
+  //       },
 
-        // Note: it's important to handle errors here
-        // instead of a catch() block so that we don't swallow
-        // exceptions from actual bugs in components.
-        (error) => {
-          setIsLoading(true);
-          setError(error);
-        }
-      );
-    // eslint-disable-next-line
+  //       // Note: it's important to handle errors here
+  //       // instead of a catch() block so that we don't swallow
+  //       // exceptions from actual bugs in components.
+  //       (error) => {
+  //         setIsLoading(true);
+  //         setError(error);
+  //       }
+  //     );
+  //   // eslint-disable-next-line
+  // }, []);
+  useEffect(() => {
+    axios.get(`http://localhost:8282/api/vet/1`)
+    .then(response => {
+      console.log(response.data)
+      setData(response.data);
+    })
+    .catch(error => {
+      console.error(error);
+      setError(error);
+    })
   }, []);
+  
   return (
     <Wrapper>
       <ProductPageLayout>
@@ -204,21 +217,25 @@ const handleChange = (prop) => (event) => {
           ) : (
             <div className="grid gridy">
               <div>
-                {/* <img src={data.image} alt={data.title} /> */}
-                <h1 className="title bold">{data.title}</h1>
-                <p className="price">${data.price}</p>
+                <img src={data.coverImage} alt={data.name} />
+                <h1 className="title bold">{data.name}</h1>
+                <p className="price">₦{data.price} per session</p>
                 <p className="description">{data.description}</p>
           
               </div>
               <div className="product-details">
-              {/* <div className="views">
-                 <h4 className="bold">Product views</h4>
-               <div className="flex j-btw product-views">
+              <div className="views">
+                 <h4 className="bold">Address</h4>
+                 <p>{data.address}</p>
+                 
+                 <p>Phone Number: <a href={`tel:+234${data.phone}`}>{data.phone}</a> </p>
+                 <p>Send a Mail: <a href={`mailto:${data.email}`}>{data.email}</a></p> 
+               {/* <div className="flex j-btw product-views">
                   {productView.map((image) => (
                     <img src={image.view} alt="product view" />
                   ))}
-                </div>
-               </div> */}
+                </div> */}
+               </div>
                 <div className="specification checker-item">
                   <h4 className="bold spec">Services offered</h4>
                   <div className="spec-details">
