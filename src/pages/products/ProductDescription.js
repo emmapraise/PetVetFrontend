@@ -16,10 +16,6 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 
-const optionPet = [
-	{ value: '1', text: 'Bingo' },
-	{ value: '2', text: 'Jack Sparrow' },
-];
 export const Wrapper = styled.div`
   margin-top: 129px;
   margin-bottom: 50px;
@@ -168,8 +164,11 @@ const productView = [
 function ProductDescription({ match }) {
 	// Initialize state
 	const [data, setData] = useState([]);
+	const [coverImage, setCoverImage] = useState([]);
+	const [specialties, setSpecialties] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [setError] = useState(null);
+  const [pets, setPets] = useState([]);
 	const [values, setValues] = useState({
 		pet: '',
 		date: '',
@@ -180,40 +179,42 @@ function ProductDescription({ match }) {
 		setValues({ ...values, [prop]: event.target.value });
 	};
 
-	// Fetch data
-	// useEffect(() => {
-	//   fetch(`https://fakestoreapi.com/products/${match.params.id}`)
-	//     .then((res) => res.json())
-	//     .then(
-	//       (result) => {
-	//         setIsLoading(true);
-	//         setData(result);
-	//         console.log(data && data);
-	//       },
-
-	//       // Note: it's important to handle errors here
-	//       // instead of a catch() block so that we don't swallow
-	//       // exceptions from actual bugs in components.
-	//       (error) => {
-	//         setIsLoading(true);
-	//         setError(error);
-	//       }
-	//     );
-	//   // eslint-disable-next-line
-	// }, []);
 	useEffect(() => {
 		axios
-			.get(`http://localhost:8282/api/vet/1`)
+			.get(`http://localhost:8282/api/vet/${match.params.id}`)
 			.then((response) => {
-        setIsLoading(true)
-				console.log(response.data);
+				setIsLoading(true);
 				setData(response.data);
+				setSpecialties(response.data.specialties);
+				setCoverImage(response.data.coverImage)
+				console.log(data);
 			})
 			.catch((error) => {
 				console.error(error);
 				setError(error);
 			});
 	}, []);
+
+  useEffect(() => {
+    axios
+    .get(`http://localhost:8282/api/pet/all`)
+    .then((response) => {
+      setIsLoading(true);
+      setPets(response.data);
+    })
+    .catch((error) => {
+      console.log(error);
+      setError(error);
+    });
+  }, []);
+  
+
+  const optionPet = pets.map((pet) => {
+	return {
+		'value': pet.id,
+		'text': pet.name 
+	}
+  })
 
 	return (
 		<Wrapper>
@@ -224,18 +225,19 @@ function ProductDescription({ match }) {
 					) : (
 						<div className="grid gridy">
 							<div>
-								<img src={data.coverImage} alt={data.name} />
+								<img src={coverImage.path} alt={data.name} />
 								<h1 className="title bold">{data.name}</h1>
 								<p className="price">₦{data.price} per session</p>
 								<p className="description">{data.description}</p>
 							</div>
+
 							<div className="product-details">
 								<div className="views">
 									<h4 className="bold">Address</h4>
 									<p>
 										<FontAwesomeIcon icon={faLocationDot} /> {data.address}
 									</p>
-									<p>
+									<p> 
 										<FontAwesomeIcon icon={faPhone} />{' '}
 										<a href={`tel:+234${data.phone}`}>{data.phone}</a>{' '}
 									</p>
@@ -243,35 +245,18 @@ function ProductDescription({ match }) {
 										<FontAwesomeIcon icon={faEnvelope} />{' '}
 										<a href={`mailto:${data.email}`}>{data.email}</a>
 									</p>
-									{/* <div className="flex j-btw product-views">
-                  {productView.map((image) => (
-                    <img src={image.view} alt="product view" />
-                  ))}
-                </div> */}
 								</div>
+
 								<div className="specification checker-item">
 									<h4 className="bold spec">Services offered</h4>
 									<div className="spec-details">
-										<p className="spec-list flex">
-											<img src={mark} alt="mark" />
-											<span>Broading</span>
-										</p>
-										<p className="spec-list flex">
-											<img src={mark} alt="mark" />
-											<span>Animal Care</span>
-										</p>
-										<p className="spec-list flex">
-											<img src={mark} alt="mark" />
-											<span>Dentistry</span>
-										</p>
-										<p className="spec-list flex">
-											<img src={mark} alt="mark" />
-											<span>Surgery</span>
-										</p>
-										<p className="spec-list flex">
-											<img src={mark} alt="mark" />
-											<span>Dematology</span>
-										</p>
+                  {specialties.map((elem) => (
+										<>
+											<p className="spec-list flex">
+                      <img src={mark} alt="mark" />
+                      <span>{elem.name}</span></p>
+										</>
+									))}
 									</div>
 								</div>
 

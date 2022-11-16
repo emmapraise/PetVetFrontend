@@ -249,7 +249,7 @@ function NavBar({ searchInput, modalRegister, modalLogin }) {
             ) : (
               <>
                 <Link to="/register">
-                  <button className="btn m-10">Register</button>
+                  <button className="btn m-10">Register Clinic</button>
                 </Link>
               </>
             )}
@@ -303,7 +303,7 @@ function NavBar({ searchInput, modalRegister, modalLogin }) {
               modalRegister
             ) : (
               <Link to="/register">
-                <button className=" orange btn">Register</button>
+                <button className=" orange btn">Register Clinic</button>
               </Link>
             )}
             {modalLogin ? (
@@ -353,7 +353,7 @@ function NavBar({ searchInput, modalRegister, modalLogin }) {
                 modalRegister
               ) : (
                 <Link to="/register">
-                  <button className=" orange btn">Register</button>
+                  <button className=" orange btn">Register Clinic</button>
                 </Link>
               )}
               {modalLogin ? (
