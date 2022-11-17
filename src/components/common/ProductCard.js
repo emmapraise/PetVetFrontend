@@ -67,7 +67,7 @@ function ProductCard({ bg, pName, price, to, like, addToCart }) {
         <div className="product-card" >
           {/* <div
             className="card-image "
-            style={{ backgroundImage: `url(${bg})` }}
+            style={{ backgroundImage: `url(${bg.path})` }}
           ></div> */}
           <img className="product-image" src={bg.path} alt="" />
           <div className="card-content">

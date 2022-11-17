@@ -35,6 +35,7 @@ function InputField({
   type,
   label,
   endAdornment,
+  startAdornment,
   onChange,
   value,
   helperText,
@@ -47,7 +48,7 @@ function InputField({
           type={type ? type : "text"}
           value={value}
           onChange={onChange}
-  
+          startAdornment={startAdornment}
           endAdornment={endAdornment}
           labelWidth={70}
         />
@@ -65,6 +66,7 @@ InputField.propTypes = {
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func,
   endAdornment: PropTypes.object,
+  startAdornment: PropTypes.object,
 };
 
 export default InputField;

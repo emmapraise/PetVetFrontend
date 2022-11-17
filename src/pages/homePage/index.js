@@ -105,26 +105,7 @@ const items = data && data;
         <NavBar
           searchInput={
             <div className="search-box-area">
-              {/* <div className="select-area flex"> */}
-                {/* <select
-                  className="select custom-select"
-                  tabIndex="1"
-                  onChange={(e) => {
-                    setFilterParam(e.target.value);
-                  }}
-                  aria-label="Filter Countries By Countries"
-                >
-                  <option value="All">All Veterinary Services</option>
-                  <option value="electronics">Animal Welfare</option>
-                  <option value="electronics">Emergency care</option>
-                  <option value="jewelery">Clinical Pharmacology</option>
-                  <option value="men's clothing">Dentistry</option>
-                  <option value="women's clothing">Dermatology</option>
-                  <option value="electronics">Nutrition</option>
-                  <option value="jewelery">Surgery</option>
-                </select>
-                <img src={arrowDown} alt="arrowDown" /> */}
-              {/* </div> */}
+              
               <div className="flex">
                 <div className="search-box">
                   <input
@@ -150,7 +131,7 @@ const items = data && data;
               trigger={
                 <div>
                   <button className=" orange btn" onClick={handleOpen}>
-                    Register
+                    Register Clinic
                   </button>
                 </div>
               }
@@ -203,11 +184,7 @@ const items = data && data;
                     )}
                   </div>
                 </div>
-                <div className="flex see-more">
-                  <Link className="bold" to="/products/electronics">
-                    See more
-                  </Link>
-                </div>
+                
               </div>
             </CardCategory>
           )}
