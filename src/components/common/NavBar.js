@@ -231,8 +231,7 @@ function NavBar({ searchInput, modalRegister, modalLogin }) {
         <div className="flex j-btw ">
           <Link to="/">
             {" "}
-            {/* <img className="logo" src={logo} alt="logo" /> */}
-            <h2>PET VET</h2>
+            <img className="logo" src="https://res.cloudinary.com/ddxyjg96x/image/upload/v1668759198/PetVet/3cd418089f054af9b1e8c65c4daf89ca.png" alt="logo" height="200px" />
           </Link>
           {searchInput}
           <div className="bottom flex j-btw" style={{ width: "450px" }}>

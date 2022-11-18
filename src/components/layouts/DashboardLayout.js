@@ -131,7 +131,7 @@ export default function DashboardLayout({ children, navText }) {
             <p className="cart-text">{navText}</p>
           </div>
           <Link to="/">
-            <img id="brand" src={brand} alt="brand" />
+            <img id="brand" src="https://res.cloudinary.com/ddxyjg96x/image/upload/v1668759198/PetVet/3cd418089f054af9b1e8c65c4daf89ca.png" alt="brand" />
           </Link>
           <IconButton
             edge="start"
