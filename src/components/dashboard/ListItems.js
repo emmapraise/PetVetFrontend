@@ -47,40 +47,22 @@ export function ListItems() {
           </ListItemLink>
         </Link>
 
-        <Link to="/purchases">
+        <Link to="/appointments">
           <ListItemLink
             className={
-              window.location.pathname === "/purchases" ? "active" : ""
+              window.location.pathname === "/appointments" ? "active" : ""
             }
           >
-            <ListItemText primary="My Purchases" />
+            <ListItemText primary="Appointments" />
           </ListItemLink>
         </Link>
 
  
-        <Link to="/message">
+        <Link to="/diagnoses">
           <ListItemLink
-            className={window.location.pathname === "/message" ? "active" : ""}
+            className={window.location.pathname === "/diagnoses" ? "active" : ""}
           >
-            <ListItemText primary="Message" />
-          </ListItemLink>
-        </Link>
-
-        <Link to="/wallet">
-          <ListItemLink
-            className={window.location.pathname === "/wallet" ? "active" : ""}
-          >
-            <ListItemText primary="Wallet" />
-          </ListItemLink>
-        </Link>
-
-        <Link to="/referrals">
-          <ListItemLink
-            className={
-              window.location.pathname === "/referrals" ? "active" : ""
-            }
-          >
-            <ListItemText primary="My Referrals" />
+            <ListItemText primary="Diagnoses" />
           </ListItemLink>
         </Link>
 

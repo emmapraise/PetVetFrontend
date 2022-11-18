@@ -1,18 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 // import PropTypes from 'prop-types'
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 // import { BrowserRouter as Router, useParams } from "react-router-dom";
-import ProductPageLayout from "../../components/layouts/ProductPageLayout";
-import styled from "styled-components";
-import view from "../../assets/view.png";
-import mark from "../../assets/spec.png";
-import InputField from "../../components/common/input/InputField";
-import SelectInput from "../../components/common/input/SelectInput";
+import ProductPageLayout from '../../components/layouts/ProductPageLayout';
+import styled from 'styled-components';
+import view from '../../assets/view.png';
+import mark from '../../assets/spec.png';
+import InputField from '../../components/common/input/InputField';
+import SelectInput from '../../components/common/input/SelectInput';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+	faLocationDot,
+	faPhone,
+	faEnvelope,
+} from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
 
-const optionPet = [
-  { value: "1", text: "Bingo" },
-  { value: "2", text: "Jack Sparrow" },
-];
 export const Wrapper = styled.div`
   margin-top: 129px;
   margin-bottom: 50px;
@@ -141,166 +144,172 @@ export const Wrapper = styled.div`
 `;
 
 const productView = [
-  {
-    id: 1,
-     view,
-  },
-  {
-    id: 2,
-     view,
-  },
-  {
-    id: 3,
-     view,
-  },
-  {
-    id: 4,
-     view,
-  },
+	{
+		id: 1,
+		view,
+	},
+	{
+		id: 2,
+		view,
+	},
+	{
+		id: 3,
+		view,
+	},
+	{
+		id: 4,
+		view,
+	},
 ];
 function ProductDescription({ match }) {
-  // Initialize state
-  const [data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [setError] = useState(null);
-  const [values, setValues] = useState({
-    pet: "",
-    date: "",
-    time: "",
-  });
+	// Initialize state
+	const [data, setData] = useState([]);
+	const [coverImage, setCoverImage] = useState([]);
+	const [specialties, setSpecialties] = useState([]);
+	const [isLoading, setIsLoading] = useState(true);
+	const [setError] = useState(null);
+  const [pets, setPets] = useState([]);
+	const [values, setValues] = useState({
+		pet: '',
+		date: '',
+		time: '',
+	});
 
+	const handleChange = (prop) => (event) => {
+		setValues({ ...values, [prop]: event.target.value });
+	};
 
-const handleChange = (prop) => (event) => {
-  setValues({ ...values, [prop]: event.target.value})
-};
+	useEffect(() => {
+		axios
+			.get(`http://localhost:8282/api/vet/${match.params.id}`)
+			.then((response) => {
+				setIsLoading(true);
+				setData(response.data);
+				setSpecialties(response.data.specialties);
+				setCoverImage(response.data.coverImage)
+				console.log(data);
+			})
+			.catch((error) => {
+				console.error(error);
+				setError(error);
+			});
+	}, []);
 
-  // Fetch data
   useEffect(() => {
-    fetch(`https://fakestoreapi.com/products/${match.params.id}`)
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          setIsLoading(true);
-          setData(result);
-          console.log(data && data);
-        },
-
-        // Note: it's important to handle errors here
-        // instead of a catch() block so that we don't swallow
-        // exceptions from actual bugs in components.
-        (error) => {
-          setIsLoading(true);
-          setError(error);
-        }
-      );
-    // eslint-disable-next-line
+    axios
+    .get(`http://localhost:8282/api/pet/all`)
+    .then((response) => {
+      setIsLoading(true);
+      setPets(response.data);
+    })
+    .catch((error) => {
+      console.log(error);
+      setError(error);
+    });
   }, []);
-  return (
-    <Wrapper>
-      <ProductPageLayout>
-        <div className="main-content">
-          {!isLoading ? (
-            <>loading...</>
-          ) : (
-            <div className="grid gridy">
-              <div>
-                {/* <img src={data.image} alt={data.title} /> */}
-                <h1 className="title bold">{data.title}</h1>
-                <p className="price">${data.price}</p>
-                <p className="description">{data.description}</p>
-          
-              </div>
-              <div className="product-details">
-              {/* <div className="views">
-                 <h4 className="bold">Product views</h4>
-               <div className="flex j-btw product-views">
-                  {productView.map((image) => (
-                    <img src={image.view} alt="product view" />
-                  ))}
-                </div>
-               </div> */}
-                <div className="specification checker-item">
-                  <h4 className="bold spec">Services offered</h4>
-                  <div className="spec-details">
-                    <p className="spec-list flex">
-                      <img src={mark} alt="mark" />
-                      <span>Broading</span>
-                    </p>
-                    <p className="spec-list flex">
-                      <img src={mark} alt="mark" />
-                      <span>Animal Care</span>
-                    </p>
-                    <p className="spec-list flex">
-                      <img src={mark} alt="mark" />
-                      <span>Dentistry</span>
-                    </p>
-                    <p className="spec-list flex">
-                      <img src={mark} alt="mark" />
-                      <span>Surgery</span>
-                    </p>
-                    <p className="spec-list flex">
-                      <img src={mark} alt="mark" />
-                      <span>Dematology</span>
-                    </p>
-                  </div>
-                </div>
+  
 
-                <div className="specification">
-                  <h4 className="bold spec">Book A Session</h4>
-                  <div className="spec-details">
-                    <div className="checker-item">
-                    <label htmlFor="Pet">Choose a Pet</label>
-                  <div className="select sub-child flex h-100 bordered">
-                    
-                    <SelectInput
-                          options={optionPet}
-                          value={values.pet}
-                          onChange={setValues}
-                          />
-                        </div>
-                          </div>
-                          <div className="checker-item">
-                    <InputField
-                    helperText={"Choose date"}
-                    value={values.date}
-                    type="date"
-                    onChange={handleChange("date")}
-                    
-                    />
-                    </div>
-                    <div className="checker-item">
-                    <InputField
-                    
-                    value={values.time}
-                    type="time"
-                    onChange={handleChange("time")}
-                    helperText="Choose time"
-                    
-                    />
-                    </div>
-                  </div>
-                  <div className="buttons">
-                  <Link to="/cart">
-                    <button className="orange" type="button">
-                    Book Appointment
-                    </button>
-                  </Link>
-                  {/* <Link to="/">
+  const optionPet = pets.map((pet) => {
+	return {
+		'value': pet.id,
+		'text': pet.name 
+	}
+  })
+
+	return (
+		<Wrapper>
+			<ProductPageLayout>
+				<div className="main-content">
+					{!isLoading ? (
+						<>loading...</>
+					) : (
+						<div className="grid gridy">
+							<div>
+								<img src={coverImage.path} alt={data.name} />
+								<h1 className="title bold">{data.name}</h1>
+								<p className="price">₦{data.price} per session</p>
+								<p className="description">{data.description}</p>
+							</div>
+
+							<div className="product-details">
+								<div className="views">
+									<h4 className="bold">Address</h4>
+									<p>
+										<FontAwesomeIcon icon={faLocationDot} /> {data.address}
+									</p>
+									<p> 
+										<FontAwesomeIcon icon={faPhone} />{' '}
+										<a href={`tel:+234${data.phone}`}>{data.phone}</a>{' '}
+									</p>
+									<p>
+										<FontAwesomeIcon icon={faEnvelope} />{' '}
+										<a href={`mailto:${data.email}`}>{data.email}</a>
+									</p>
+								</div>
+
+								<div className="specification checker-item">
+									<h4 className="bold spec">Services offered</h4>
+									<div className="spec-details">
+                  {specialties.map((elem) => (
+										<>
+											<p className="spec-list flex">
+                      <img src={mark} alt="mark" />
+                      <span>{elem.name}</span></p>
+										</>
+									))}
+									</div>
+								</div>
+
+								<div className="specification">
+									<h4 className="bold spec">Book A Session</h4>
+									<div className="spec-details">
+										<div className="checker-item">
+											<label htmlFor="Pet">Choose a Pet</label>
+											<div className="select sub-child flex h-100 bordered">
+												<SelectInput
+													options={optionPet}
+													value={values.pet}
+													onChange={setValues}
+												/>
+											</div>
+										</div>
+										<div className="checker-item">
+											<InputField
+												helperText={'Choose date'}
+												value={values.date}
+												type="date"
+												onChange={handleChange('date')}
+											/>
+										</div>
+										<div className="checker-item">
+											<InputField
+												value={values.time}
+												type="time"
+												onChange={handleChange('time')}
+												helperText="Choose time"
+											/>
+										</div>
+									</div>
+									<div className="buttons">
+										<Link to="/cart">
+											<button className="orange" type="button">
+												Book Appointment
+											</button>
+										</Link>
+										{/* <Link to="/">
                     <button className="white" type="button">
                       Continue Shopping
                     </button>
                   </Link> */}
-                </div>
-                </div>
-              </div>
-              
-            </div>
-          )}
-        </div>
-      </ProductPageLayout>
-      
-    </Wrapper>
-  );
+									</div>
+								</div>
+							</div>
+						</div>
+					)}
+				</div>
+			</ProductPageLayout>
+		</Wrapper>
+	);
 }
 
 ProductDescription.propTypes = {};

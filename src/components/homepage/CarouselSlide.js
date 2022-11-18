@@ -1,7 +1,7 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import Carousel from "react-bootstrap/Carousel";
-import { Link } from "react-router-dom"; //imp routing library
+import { Link } from "react-router-dom";
 
 import styled from "styled-components";
 
@@ -131,8 +131,8 @@ export default function HomeCarousel() {
         <Carousel.Item interval={111111} className="carousel3">
           <div className="hero">
             <p className="sub-title">-Pet Care-</p>
-            <h1 className="title1">Get Luxury for a Token</h1>
-            <p className="sub-text">Best Luxury Collections money can buy!</p>
+            <h1 className="title1">We love Pet</h1>
+            {/* <p className="sub-text">Best Luxury Collections money can buy!</p> */}
             <Link to="/register" className="bold hero-btn">
               Get started
             </Link>
@@ -140,9 +140,9 @@ export default function HomeCarousel() {
         </Carousel.Item>
         <Carousel.Item interval={111111} className="carousel2">
           <div className="hero">
-            <p className="sub-title">-Best Sellers-</p>
+            <p className="sub-title">-Pet Love-</p>
 
-            <h1 className="title1">Your one stop Online Shop</h1>
+            <h1 className="title1">We treat Pet with Love</h1>
             <p className="sub-text">Shop on a friendly budget</p>
             <Link to="/register" className="bold hero-btn">
               Get started
@@ -152,6 +152,7 @@ export default function HomeCarousel() {
 
         <Carousel.Item interval={111111} className="carousel1">
           <div className="hero">
+          <p className="sub-title">-Pet Treat-</p>
             <h1 className="title1">SAVE AS YOU GO!</h1>
             <p className="sub-text">
               Shop for our discounted and quality products
@@ -163,8 +164,7 @@ export default function HomeCarousel() {
         </Carousel.Item>
         <Carousel.Item interval={111111} className="carousel4">
           <div className="hero">
-            <p className="sub-title">-New Arrivals-</p>
-
+            <p className="sub-title">-Pet Care-</p>
             <h1 className="title1">Quality Utensils for less</h1>
             <p className="sub-text">Get the best of Etsea products</p>
             <Link to="/register" className="bold hero-btn">

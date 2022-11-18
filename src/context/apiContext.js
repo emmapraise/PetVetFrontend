@@ -4,19 +4,18 @@ const APIContext = createContext();
 
 function APIContextProvider({ children }) {
   // Initialize state
-  const [data, setData] = useState([]);
+  const [data, setData] = useState([  ]);
   const [isLoading, setIsLoading] = useState(true);
   const [setError] = useState(null);
 
   // Fetch data
   useEffect(() => {
-	fetch("https://fakestoreapi.com/products")
+	fetch("http://localhost:8282/api/vet/all")
 	.then((res) => res.json())
 	.then(
 	  (result) => {
 		setIsLoading(true);
 		setData(result);
-		// console.log(data && data)
 	  },
 
 	  // Note: it's important to handle errors here

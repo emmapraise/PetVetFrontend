@@ -67,13 +67,13 @@ function ProductCard({ bg, pName, price, to, like, addToCart }) {
         <div className="product-card" >
           {/* <div
             className="card-image "
-            style={{ backgroundImage: `url(${bg})` }}
+            style={{ backgroundImage: `url(${bg.path})` }}
           ></div> */}
-          <img className="product-image" src={bg} alt="" />
+          <img className="product-image" src={bg.path} alt="" />
           <div className="card-content">
             <div className="text">
               <h2 className="card-name">{pName}</h2>
-              <p className="card-price bold">$ {price} </p>
+              <p className="card-price bold">₦ {price.toLocaleString()} </p>
               <p className="card-sub-price">per session</p>
             </div>
             <div className="icons flex">
@@ -93,7 +93,7 @@ ProductCard.propTypes = {
   like: PropTypes.string,
   price: PropTypes.number,
   pName: PropTypes.string,
-  bg: PropTypes.string,
+  bg: PropTypes.object,
 };
 
 export default ProductCard;

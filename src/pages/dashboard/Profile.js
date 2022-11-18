@@ -125,26 +125,14 @@ function Profile(props) {
     firstName: "",
     lastName: "",
     email: "",
-    country: "",
+    phone: "",
     address: "",
+    city: "",
   });
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
   };
-
-  const [referrralLink] = React.useState("www.https://etsea.com/JamesJoe123");
-  const [referrralBtn, setReferrralBtn] = React.useState("Copy");
-  const referralRef = React.useRef(null);
-
-  function copyToClipboard(e) {
-    referralRef.current.select();
-    document.execCommand("copy");
-    // This is just personal preference.
-    // I prefer to not show the whole text area selected.
-    e.target.focus();
-    setReferrralBtn("Copied!");
-  }
   return (
     <Wrapper>
       <DashboardLayout navText="Profile">
@@ -176,40 +164,20 @@ function Profile(props) {
             onChange={handleChange("email")}
           />
           <InputField
-            label="Country"
-            value={values.country}
-            onChange={handleChange("country")}
+            label="Phone Number"
+            value={values.phone}
+            onChange={handleChange("phone")}
           />
-        </div>
-        <div className="mt-30">
           <InputField
-            label="Residential Address"
+            label="Address"
             value={values.address}
             onChange={handleChange("address")}
           />
-        </div>
-
-        <div className="with-label">
-          <label htmlFor="referrralLink">My Referral link:</label>
-          <div className="copier flex">
-            <input
-              ref={referralRef}
-              type="text"
-              name="referrralLink"
-              value={referrralLink}
-            />
-            <button onClick={copyToClipboard}>{referrralBtn}</button>
-          </div>
-        </div>
-        <div className="with-label">
-          <label htmlFor="referrralLink">Connect social Networks</label>
-          <div className="copier flex">
-            <div className="socials flex">
-              <img src={insta} alt="instagram" />
-              <img className="facebook" src={facebook} alt="facebook" />
-            </div>
-            <button>Connect</button>
-          </div>
+          <InputField
+            label="City"
+            value={values.city}
+            onChange={handleChange("city")}
+          />
         </div>
       </DashboardLayout>
     </Wrapper>

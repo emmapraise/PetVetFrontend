@@ -231,8 +231,7 @@ function NavBar({ searchInput, modalRegister, modalLogin }) {
         <div className="flex j-btw ">
           <Link to="/">
             {" "}
-            {/* <img className="logo" src={logo} alt="logo" /> */}
-            <h2>PET VET</h2>
+            <img className="logo" src="https://res.cloudinary.com/ddxyjg96x/image/upload/v1668759198/PetVet/3cd418089f054af9b1e8c65c4daf89ca.png" alt="logo" height="200px" />
           </Link>
           {searchInput}
           <div className="bottom flex j-btw" style={{ width: "450px" }}>
@@ -248,8 +247,8 @@ function NavBar({ searchInput, modalRegister, modalLogin }) {
               modalRegister
             ) : (
               <>
-                <Link to="/login">
-                  <button className="btn m-10">Login</button>
+                <Link to="/register">
+                  <button className="btn m-10">Register Clinic</button>
                 </Link>
               </>
             )}
@@ -303,7 +302,7 @@ function NavBar({ searchInput, modalRegister, modalLogin }) {
               modalRegister
             ) : (
               <Link to="/register">
-                <button className=" orange btn">Register</button>
+                <button className=" orange btn">Register Clinic</button>
               </Link>
             )}
             {modalLogin ? (
@@ -353,7 +352,7 @@ function NavBar({ searchInput, modalRegister, modalLogin }) {
                 modalRegister
               ) : (
                 <Link to="/register">
-                  <button className=" orange btn">Register</button>
+                  <button className=" orange btn">Register Clinic</button>
                 </Link>
               )}
               {modalLogin ? (
