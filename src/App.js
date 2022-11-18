@@ -16,6 +16,7 @@ import Cart from "./pages/Cart";
 import FilledCart from "./pages/FilledCart";
 import Login from "./pages/authentication/Login";
 import Register from "./pages/authentication/Register";
+import RegisterClinic from "./pages/authentication/RegisterClinic";
 import ForgotPassword from "./pages/authentication/ForgotPassword";
 import Checkout from "./pages/payments/Checkout";
 import DirectDeposit from "./pages/payments/DirectDeposit";
@@ -50,6 +51,7 @@ function App() {
               <Route path="/products/:id" component={ProductDescription} />
               <Route path="/login" component={Login} />
               <Route path="/register" component={Register} />
+              <Route path="/registerClinic" component={RegisterClinic} />
               <Route path="/forgot-password" component={ForgotPassword} />
               <Route path="/cart" component={Cart} />
               <Route path="/filledCart" component={FilledCart} />
