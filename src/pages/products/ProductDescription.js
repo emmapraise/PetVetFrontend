@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import {useFormik} from 'formik'
+// import {useFormik} from 'formik'
 // import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom';
+import {useHistory } from 'react-router-dom';
 // import { BrowserRouter as Router, useParams } from "react-router-dom";
 import ProductPageLayout from '../../components/layouts/ProductPageLayout';
 import styled from 'styled-components';
-import view from '../../assets/view.png';
 import mark from '../../assets/spec.png';
 import InputField from '../../components/common/input/InputField';
 import SelectInput from '../../components/common/input/SelectInput';
@@ -144,28 +143,11 @@ export const Wrapper = styled.div`
     margin-bottom: 24px;
 `;
 
-const productView = [
-	{
-		id: 1,
-		view,
-	},
-	{
-		id: 2,
-		view,
-	},
-	{
-		id: 3,
-		view,
-	},
-	{
-		id: 4,
-		view,
-	},
-];
 
 
 function ProductDescription({ match }) {
 	// Initialize state
+	let history = useHistory();
 	const [data, setData] = useState([]);
 	const [coverImage, setCoverImage] = useState([]);
 	const [specialties, setSpecialties] = useState([]);
@@ -175,7 +157,6 @@ function ProductDescription({ match }) {
 	const [values, setValues] = useState({
 		pet: null,
 		date: '',
-		time: '',
 	});
 
 	const handleChange = (prop) => (event) => {
@@ -184,23 +165,38 @@ function ProductDescription({ match }) {
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		console.log("The values are ", values.pet);
-		axios.post(`http://localhost:8282/api/appointment/vet/${match.params.id}/pet/${values.pet}`)
+		console.log("The values are ", {
+			date: values.date});
+		axios
+			.post(`appointment/vet/${match.params.id}/pet/${values.pet}`, 
+			{date: values.date}, {
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			})
+			.then((response) => { 
+				console.log(response.data);
+				history.push("/appointments");
+				
+			})
+			.catch((error) => {
+				console.log(error);
+			})
 	}
 
-	const {setFieldValue}= useFormik({
-		initialValues: {
-			id: null,
-			date: null
-		},
-		onSubmit(){
+	// const {setFieldValue}= useFormik({
+	// 	initialValues: {
+	// 		id: null,
+	// 		date: null
+	// 	},
+	// 	onSubmit(){
 			
-		}
-	})
+	// 	}
+	// })
 
 	useEffect(() => {
 		axios
-			.get(`http://localhost:8282/api/vet/${match.params.id}`)
+			.get(`vet/${match.params.id}`)
 			.then((response) => {
 				setIsLoading(true);
 				setData(response.data);
@@ -210,20 +206,19 @@ function ProductDescription({ match }) {
 			.catch((error) => {
 				setError(error);
 			});
-	}, []);
+	}, );
 
   useEffect(() => {
     axios
-    .get(`http://localhost:8282/api/pet/all`)
+    .get(`pet/all`)
     .then((response) => {
       setIsLoading(true);
       setPets(response.data);
     })
     .catch((error) => {
-      console.log(error);
       setError(error);
     });
-  }, []);
+  }, );
 
   const optionPet = pets.map((pet) => {
 	return {
