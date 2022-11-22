@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import {useFormik} from 'formik'
 // import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom';
 // import { BrowserRouter as Router, useParams } from "react-router-dom";
@@ -161,6 +162,8 @@ const productView = [
 		view,
 	},
 ];
+
+
 function ProductDescription({ match }) {
 	// Initialize state
 	const [data, setData] = useState([]);
@@ -170,7 +173,7 @@ function ProductDescription({ match }) {
 	const [setError] = useState(null);
   const [pets, setPets] = useState([]);
 	const [values, setValues] = useState({
-		pet: '',
+		pet: null,
 		date: '',
 		time: '',
 	});
@@ -178,6 +181,22 @@ function ProductDescription({ match }) {
 	const handleChange = (prop) => (event) => {
 		setValues({ ...values, [prop]: event.target.value });
 	};
+
+	const handleSubmit = (event) => {
+		event.preventDefault();
+		console.log("The values are ", values.pet);
+		axios.post(`http://localhost:8282/api/appointment/vet/${match.params.id}/pet/${values.pet}`)
+	}
+
+	const {setFieldValue}= useFormik({
+		initialValues: {
+			id: null,
+			date: null
+		},
+		onSubmit(){
+			
+		}
+	})
 
 	useEffect(() => {
 		axios
@@ -187,10 +206,8 @@ function ProductDescription({ match }) {
 				setData(response.data);
 				setSpecialties(response.data.specialties);
 				setCoverImage(response.data.coverImage)
-				console.log(data);
 			})
 			.catch((error) => {
-				console.error(error);
 				setError(error);
 			});
 	}, []);
@@ -207,7 +224,6 @@ function ProductDescription({ match }) {
       setError(error);
     });
   }, []);
-  
 
   const optionPet = pets.map((pet) => {
 	return {
@@ -215,6 +231,7 @@ function ProductDescription({ match }) {
 		'text': pet.name 
 	}
   })
+  
 
 	return (
 		<Wrapper>
@@ -260,48 +277,43 @@ function ProductDescription({ match }) {
 									</div>
 								</div>
 
-								<div className="specification">
+							<div className="specification">
+								<form onSubmit={handleSubmit}>
 									<h4 className="bold spec">Book A Session</h4>
 									<div className="spec-details">
 										<div className="checker-item">
 											<label htmlFor="Pet">Choose a Pet</label>
 											<div className="select sub-child flex h-100 bordered">
 												<SelectInput
+												label="Pets"
 													options={optionPet}
 													value={values.pet}
-													onChange={setValues}
+													onChange={handleChange('pet')}
 												/>
 											</div>
 										</div>
 										<div className="checker-item">
-											<InputField
-												helperText={'Choose date'}
-												value={values.date}
-												type="date"
-												onChange={handleChange('date')}
-											/>
+										<InputField type="datetime-local"		
+										helperText="Book Appointment"
+										value={values.date}
+										onChange={handleChange('date')}
+										/>
 										</div>
-										<div className="checker-item">
-											<InputField
-												value={values.time}
-												type="time"
-												onChange={handleChange('time')}
-												helperText="Choose time"
-											/>
-										</div>
+										
 									</div>
 									<div className="buttons">
-										<Link to="/cart">
-											<button className="orange" type="button">
+										{/* <Link to="/cart"> */}
+											<button className="orange" type="submit">
 												Book Appointment
 											</button>
-										</Link>
+										{/* </Link> */}
 										{/* <Link to="/">
-                    <button className="white" type="button">
-                      Continue Shopping
-                    </button>
-                  </Link> */}
+											<button className="white" type="button">
+											Continue Shopping
+											</button>
+										</Link> */}
 									</div>
+								</form>
 								</div>
 							</div>
 						</div>
