@@ -68,7 +68,7 @@ function ProductPageLayout({children, searchInput}) {
 }
 
 ProductPageLayout.propTypes = {
-children: PropTypes.func,
+children: PropTypes.object,
 searchInput: PropTypes.func,
 }
 

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 // import {useFormik} from 'formik'
 // import PropTypes from 'prop-types'
-import {useHistory } from 'react-router-dom';
-// import { BrowserRouter as Router, useParams } from "react-router-dom";
+import { useHistory } from 'react-router-dom';
 import ProductPageLayout from '../../components/layouts/ProductPageLayout';
 import styled from 'styled-components';
 import mark from '../../assets/spec.png';
@@ -143,8 +142,6 @@ export const Wrapper = styled.div`
     margin-bottom: 24px;
 `;
 
-
-
 function ProductDescription({ match }) {
 	// Initialize state
 	let history = useHistory();
@@ -153,7 +150,7 @@ function ProductDescription({ match }) {
 	const [specialties, setSpecialties] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [setError] = useState(null);
-  const [pets, setPets] = useState([]);
+	const [pets, setPets] = useState([]);
 	const [values, setValues] = useState({
 		pet: null,
 		date: '',
@@ -165,34 +162,25 @@ function ProductDescription({ match }) {
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		console.log("The values are ", {
-			date: values.date});
+
 		axios
-			.post(`appointment/vet/${match.params.id}/pet/${values.pet}`, 
-			{date: values.date}, {
-				headers: {
-					'Content-Type': 'application/json'
+			.post(
+				`appointment/vet/${match.params.id}/pet/${values.pet}`,
+				{ date: values.date },
+				{
+					headers: {
+						'Content-Type': 'application/json',
+					},
 				}
-			})
-			.then((response) => { 
+			)
+			.then((response) => {
 				console.log(response.data);
-				history.push("/appointments");
-				
+				history.push('/appointments');
 			})
 			.catch((error) => {
 				console.log(error);
-			})
-	}
-
-	// const {setFieldValue}= useFormik({
-	// 	initialValues: {
-	// 		id: null,
-	// 		date: null
-	// 	},
-	// 	onSubmit(){
-			
-	// 	}
-	// })
+			});
+	};
 
 	useEffect(() => {
 		axios
@@ -201,32 +189,31 @@ function ProductDescription({ match }) {
 				setIsLoading(true);
 				setData(response.data);
 				setSpecialties(response.data.specialties);
-				setCoverImage(response.data.coverImage)
+				setCoverImage(response.data.coverImage);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	}, []);
+
+	useEffect(() => {
+		axios
+			.get(`pet/all`)
+			.then((response) => {
+				setIsLoading(true);
+				setPets(response.data);
 			})
 			.catch((error) => {
 				setError(error);
 			});
-	}, );
+	});
 
-  useEffect(() => {
-    axios
-    .get(`pet/all`)
-    .then((response) => {
-      setIsLoading(true);
-      setPets(response.data);
-    })
-    .catch((error) => {
-      setError(error);
-    });
-  }, );
-
-  const optionPet = pets.map((pet) => {
-	return {
-		'value': pet.id,
-		'text': pet.name 
-	}
-  })
-  
+	const optionPet = pets.map((pet) => {
+		return {
+			value: pet.id,
+			text: pet.name,
+		};
+	});
 
 	return (
 		<Wrapper>
@@ -249,7 +236,7 @@ function ProductDescription({ match }) {
 									<p>
 										<FontAwesomeIcon icon={faLocationDot} /> {data.address}
 									</p>
-									<p> 
+									<p>
 										<FontAwesomeIcon icon={faPhone} />{' '}
 										<a href={`tel:+234${data.phone}`}>{data.phone}</a>{' '}
 									</p>
@@ -262,53 +249,54 @@ function ProductDescription({ match }) {
 								<div className="specification checker-item">
 									<h4 className="bold spec">Services offered</h4>
 									<div className="spec-details">
-                  {specialties.map((elem) => (
-										<>
-											<p className="spec-list flex">
-                      <img src={mark} alt="mark" />
-                      <span>{elem.name}</span></p>
-										</>
-									))}
+										{specialties.map((elem, index) => (
+											<>
+												<p className="spec-list flex" key={index}>
+													<img src={mark} alt="mark" />
+													<span>{elem.name}</span>
+												</p>
+											</>
+										))}
 									</div>
 								</div>
 
-							<div className="specification">
-								<form onSubmit={handleSubmit}>
-									<h4 className="bold spec">Book A Session</h4>
-									<div className="spec-details">
-										<div className="checker-item">
-											<label htmlFor="Pet">Choose a Pet</label>
-											<div className="select sub-child flex h-100 bordered">
-												<SelectInput
-												label="Pets"
-													options={optionPet}
-													value={values.pet}
-													onChange={handleChange('pet')}
+								<div className="specification">
+									<form onSubmit={handleSubmit}>
+										<h4 className="bold spec">Book A Session</h4>
+										<div className="spec-details">
+											<div className="checker-item">
+												<label htmlFor="Pet">Choose a Pet</label>
+												<div className="select sub-child flex h-100 bordered">
+													<SelectInput
+														label="Pets"
+														options={optionPet}
+														value={values.pet}
+														onChange={handleChange('pet')}
+													/>
+												</div>
+											</div>
+											<div className="checker-item">
+												<InputField
+													type="datetime-local"
+													helperText="Book Appointment"
+													value={values.date}
+													onChange={handleChange('date')}
 												/>
 											</div>
 										</div>
-										<div className="checker-item">
-										<InputField type="datetime-local"		
-										helperText="Book Appointment"
-										value={values.date}
-										onChange={handleChange('date')}
-										/>
-										</div>
-										
-									</div>
-									<div className="buttons">
-										{/* <Link to="/cart"> */}
+										<div className="buttons">
+											{/* <Link to="/cart"> */}
 											<button className="orange" type="submit">
 												Book Appointment
 											</button>
-										{/* </Link> */}
-										{/* <Link to="/">
+											{/* </Link> */}
+											{/* <Link to="/">
 											<button className="white" type="button">
 											Continue Shopping
 											</button>
 										</Link> */}
-									</div>
-								</form>
+										</div>
+									</form>
 								</div>
 							</div>
 						</div>

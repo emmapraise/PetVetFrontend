@@ -62,7 +62,7 @@ function InputField({
 InputField.propTypes = {
   type: PropTypes.string,
   helperText: PropTypes.string,
-  label: PropTypes.string.isRequired,
+  label: PropTypes.string,
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func,
   endAdornment: PropTypes.object,
