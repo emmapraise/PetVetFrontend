@@ -10,6 +10,8 @@ import emailIcon from "../../assets/email.svg";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
 import CheckboxInput from "../../components/common/input/CheckboxInput";
+import axios from "axios";
+
 const Wrapper = styled.div`
   /* min-height: 100vh; */
   padding: 30px 0;
@@ -136,7 +138,7 @@ const Wrapper = styled.div`
 function Login({ layout }) {
   const [values, setValues] = React.useState({
     password: "",
-    email: "",
+    username: "",
     showPassword: false,
   });
 
@@ -162,6 +164,28 @@ function Login({ layout }) {
     setState({ ...state, [event.target.name]: event.target.checked });
   };
 
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+
+  //   const form = new FormData();
+  //   form.append("username", values.username);
+  //   form.append("password", values.password);
+    
+
+  //   try {
+  //     const response = await axios.post(`http://localhost:8282/login`, form, {
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       }
+  //     })
+  //     console.log("this is a nice one", response.data);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+
+    
+  // }
+
   return (
     <Wrapper className="flex">
       <div className={`${layout ? layout : "auth-main"}`}>
@@ -186,13 +210,16 @@ function Login({ layout }) {
         <div className="rhs">
           <p className="bold log-title">Login</p>
           <p className="msg">Welcome back! </p>
+          {/* <form action="http://localhost:8282/login" method="post"> */}
+          <form action="http://localhost:8282/login" method="post">
           <div className="input-container">
             <div className="row-input ">
               <InputField
                 label="Email"
                 type="email"
-                value={values.email}
-                onChange={handleChange("email")}
+                name="username"
+                value={values.username}
+                onChange={handleChange("username")}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
@@ -223,6 +250,7 @@ function Login({ layout }) {
                 type={values.showPassword ? "text" : "password"}
                 value={values.password}
                 onChange={handleChange("password")}
+                name="password"
               />
             </div>
 
@@ -240,9 +268,10 @@ function Login({ layout }) {
               </Link>
             </div>
             <div className="button">
-              <button type="button">Sign in</button>
+              <button type="submit">Sign in</button>
             </div>
           </div>
+          </form>
         </div>
       </div>
     </Wrapper>

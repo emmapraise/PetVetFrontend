@@ -34,6 +34,7 @@ const Wrapper = styled.div`
 function InputField({
   type,
   label,
+  name,
   endAdornment,
   startAdornment,
   onChange,
@@ -48,6 +49,7 @@ function InputField({
           type={type ? type : "text"}
           value={value}
           onChange={onChange}
+          name={name}
           startAdornment={startAdornment}
           endAdornment={endAdornment}
           labelWidth={70}
@@ -63,6 +65,7 @@ InputField.propTypes = {
   type: PropTypes.string,
   helperText: PropTypes.string,
   label: PropTypes.string,
+  name: PropTypes.string,
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func,
   endAdornment: PropTypes.object,

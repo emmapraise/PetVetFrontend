@@ -1,10 +1,8 @@
-import React from "react";
+import React, { useEffect, useState} from "react";
 // import PropTypes from "prop-types";
 import DarkNavBar from "../../components/common/DarkNavBar";
 import styled from "styled-components";
 import naira from "../../assets/naira.svg";
-import productImg from "../../assets/ankle.png";
-import productImg2 from "../../assets/black-dress.png";
 import cartEmpty from "../../assets/cart.png";
 import back from "../../assets/backOrange.svg";
 import DashboardLayout from "../../components/layouts/DashboardLayout";
@@ -12,23 +10,7 @@ import DashboardLayout from "../../components/layouts/DashboardLayout";
 import { Link } from "react-router-dom";
 
 import markgreen from "../../assets/markgreen.png";
-
-
-
-const purcchaseItems = [
-  {
-    name: "Portable Power Bank External Battery Charger",
-    price: 7750,
-    img: productImg,
-    paymentType: "Outright payment",
-  },
-  {
-    name: " ASUS 10.1” 4GB+64GB Android 10.0 HD IPS Tablet PC - Black ",
-    price: 15600,
-    img: productImg2,
-    paymentType: "Installment payment",
-  },
-];
+import axios from "axios";
 
 const Wrapper = styled.div`
 
@@ -336,72 +318,87 @@ grid-template-columns:1fr max-content   ;
 `;
 function Purchases(props) {
 
+const [data, setData] = useState([]);
+
+useEffect(async() => {
+  try {
+  const response = await axios.get(`appointment/owner/2`)
+  console.log(response.data);
+  setData(response.data)
+  } catch (error) {
+    console.error(error);
+  }
+}, []);
+
+const converDate = (date) => {
+  var dateObj = new Date(date);
+  var year = dateObj.getFullYear();
+  var month = dateObj.getMonth();
+  var day = dateObj.getDay();
+  var hrs = dateObj.getHours();
+  var mins = dateObj.getMinutes()
+  return day + "/" + month + "/" + year + " " + hrs+":"+mins;
+}
 
 
   return (
     <Wrapper>
-      {purcchaseItems.length > 0 ? (
-        <DashboardLayout navText="My Purchases">
+      {data.length > 0 ? (
+        <DashboardLayout navText="My Appintments">
           <>
-            <p className="items">Appointment(s) {`(${purcchaseItems.length} Items)`}</p>
+            <p className="items">Appointment(s) {`(${data.length} Items)`}</p>
             <>
               {" "}
               <div className="titles">
                 <div className="flex first">
                   {" "}
-                  <p>VET CLINIC</p>
+                  <p>Vet Clinic</p>
                 </div>
                 <div className="grid">
                   <div className="flexy flex">
-                    <p>PET</p>
-                    <p>DIAGONISIS</p>
-                    <p>AMOUNT</p>
+                    <p>Pet Name</p>
+                    <p>Date</p>
+                    <p>Charge</p>
                   </div>
-                  <p>STATUS</p>
+                  <p>Status</p>
                 </div>
               </div>
-              {purcchaseItems.map(({ name, price, img, paymentType }, index) => (
+              {data.map(({ vet, pet, date, status }, index) => (
                 <div className="checker-item ">
                   <div className="scrolly">
                     <div className=" grid cart-item ">
                       <div className="rhs bordered">
                         <div className="p-image">
-                          <img src={img} alt="item" />
+                          <img src={vet.logo.path} alt="item" />
                         </div>
                         <div className="product-details">
-                          <p className="name bold">{name}</p>
+                          <p className="name bold">{vet.name}</p>
                         </div>
                       </div>
                       <div className="lhs-card h-100 ">
                         <div className="quantity sub-child flex h-100 bordered">
-                         <p className="quantity">1</p>
+                         <p className="quantity">{pet.name}</p>
                         </div>
                         <div className="discount-price  sub-child flex h-100 bordered">
                           <p className=" flex">
-                            <img className="naira" src={naira} alt="naira" />{" "}
-                            <span className="bold text-13">7,750</span>
+                            
+                            <span className="bold text-13">{converDate(date)}</span>
                           </p>
-                          <div className="discount  flex j-btw">
-                            <p className="crossed-price flex">
-                              <img className="naira" src={naira} alt="naira" />{" "}
-                              <span className="text-13">9,750</span>
-                            </p>
-                            <p className="percent">-15%</p>
-                          </div>
+                          
                         </div>
                         <div className="sub-child flex h-100 bordered">
                           <p className="price flex">
                             <img className="naira" src={naira} alt="naira" />{" "}
                             <span className="bold text-13">
-                              {price
+                              {vet.price
                                 .toString()
                                 .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")}
                             </span>
                           </p>
                         </div>
                         <div className="payment flex">
-                          <p className="pay-text">{paymentType}</p>
-                          {paymentType === "Outright payment" ? (
+                          <p className="pay-text">{status}</p>
+                          {/* {paymentType === "Outright payment" ? (
                             <img className="m-15" src={markgreen} alt="paid" />
                           ) : (
                             <div className="flex m-15">
@@ -434,7 +431,7 @@ function Purchases(props) {
                                 </p>
                               </p>
                             </div>
-                          )}
+                          )} */}
                         </div>
                       </div>
                     </div>
@@ -443,7 +440,7 @@ function Purchases(props) {
               ))}
               
             </>
-            <Link to="/emptyPurchases">emptyPurchases</Link>
+            
           </>
         </DashboardLayout>
       ) : (

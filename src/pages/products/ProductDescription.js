@@ -13,6 +13,7 @@ import {
 	faPhone,
 	faEnvelope,
 } from '@fortawesome/free-solid-svg-icons';
+import FormControl from '@material-ui/core/FormControl';
 import axios from 'axios';
 
 export const Wrapper = styled.div`
@@ -145,7 +146,14 @@ export const Wrapper = styled.div`
 function ProductDescription({ match }) {
 	// Initialize state
 	let history = useHistory();
-	const [data, setData] = useState([]);
+	const [data, setData] = useState({
+		name: "",
+		price: "",
+		user: {
+			phone: "",
+			email: "",
+		}
+	});
 	const [coverImage, setCoverImage] = useState([]);
 	const [specialties, setSpecialties] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
@@ -188,6 +196,7 @@ function ProductDescription({ match }) {
 			.then((response) => {
 				setIsLoading(true);
 				setData(response.data);
+				console.log(response.data);
 				setSpecialties(response.data.specialties);
 				setCoverImage(response.data.coverImage);
 			})
@@ -196,24 +205,25 @@ function ProductDescription({ match }) {
 			});
 	}, []);
 
-	useEffect(() => {
-		axios
-			.get(`pet/all`)
-			.then((response) => {
-				setIsLoading(true);
-				setPets(response.data);
-			})
-			.catch((error) => {
-				setError(error);
-			});
-	});
+	useEffect(async () => {
+		try {
+			const response = await axios.get(`pet/all`);
+			setPets(response.data);
+		} catch (error) {
+			console.error(error);
+		}
+	}, []);
 
 	const optionPet = pets.map((pet) => {
 		return {
 			value: pet.id,
 			text: pet.name,
 		};
-	});
+	}, []);
+
+	var now = new Date();
+	now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+	const today = now.toISOString().slice(0, 16);
 
 	return (
 		<Wrapper>
@@ -238,11 +248,11 @@ function ProductDescription({ match }) {
 									</p>
 									<p>
 										<FontAwesomeIcon icon={faPhone} />{' '}
-										<a href={`tel:+234${data.phone}`}>{data.phone}</a>{' '}
+										<a href={`tel:+234${data.phone}`}>{data?.user.phone}</a>{' '}
 									</p>
 									<p>
 										<FontAwesomeIcon icon={faEnvelope} />{' '}
-										<a href={`mailto:${data.email}`}>{data.email}</a>
+										<a href={`mailto:${data.email}`}>{data?.user.email}</a>
 									</p>
 								</div>
 
@@ -276,12 +286,24 @@ function ProductDescription({ match }) {
 												</div>
 											</div>
 											<div className="checker-item">
-												<InputField
+												{/* <InputField
 													type="datetime-local"
 													helperText="Book Appointment"
 													value={values.date}
+													min="2022-11-26T00:00"
 													onChange={handleChange('date')}
-												/>
+												/> */}
+												<FormControl variant="outlined">
+													<label for="date">Date and Time of Appointment </label>
+													<input
+														type="datetime-local"
+														name=""
+														id="date"
+														value={values.date}
+														min={today}
+														onChange={handleChange('date')}
+													/>
+												</FormControl>
 											</div>
 										</div>
 										<div className="buttons">
@@ -290,11 +312,6 @@ function ProductDescription({ match }) {
 												Book Appointment
 											</button>
 											{/* </Link> */}
-											{/* <Link to="/">
-											<button className="white" type="button">
-											Continue Shopping
-											</button>
-										</Link> */}
 										</div>
 									</form>
 								</div>

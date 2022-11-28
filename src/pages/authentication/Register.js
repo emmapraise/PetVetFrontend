@@ -133,7 +133,8 @@ const Wrapper = styled.div`
 `;
 function Register({ layout }) {
   const [values, setValues] = React.useState({
-    fname: "",
+    firstName: "",
+    lastName: "",
     password: "",
     password2: "",
     lname: "",
