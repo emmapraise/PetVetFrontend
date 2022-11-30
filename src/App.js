@@ -11,6 +11,10 @@ import Login from "./pages/authentication/Login";
 import Register from "./pages/authentication/Register";
 import RegisterClinic from "./pages/authentication/RegisterClinic";
 import ForgotPassword from "./pages/authentication/ForgotPassword";
+import Pets from "./pages/dashboard/Pets";
+import Confirm from "./pages/dashboard/Confirm";
+import Approve from "./pages/dashboard/Approve";
+import Sent from "./pages/dashboard/Sent";
 import Checkout from "./pages/payments/Checkout";
 import DirectDeposit from "./pages/payments/DirectDeposit";
 import Dashboard from "./pages/dashboard";
@@ -27,6 +31,9 @@ function App() {
             <Switch>
               <Route exact path="/" component={HomePage} />
               <Route path="/vet/:id" component={ProductDescription} />
+              <Route path="/confirm/" component={Confirm} />
+              <Route path="/sent/" component={Sent} />
+              <Route path="/approve/" component={Approve} />
               <Route path="/login" component={Login} />
               <Route path="/register" component={Register} />
               <Route path="/registerClinic" component={RegisterClinic} />
@@ -34,6 +41,7 @@ function App() {
               <Route path="/cart" component={Cart} />
               <Route path="/filledCart" component={FilledCart} />
               <Route path="/appointments" component={Appointments} />
+              <Route path="/pets" component={Pets} />
               <Route path="/emptyPurchases" component={emptyPurchases} />
               <Route path="/checkout" component={Checkout} />
               <Route path="/direct-deposit" component={DirectDeposit} />

@@ -3,7 +3,7 @@ import React from "react";
 import authbg from "../../assets/authbg.png";
 import kite from "../../assets/kite.png";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import InputField from "../../components/common/input/InputField";
 import padlock from "../../assets/padlock.svg";
 import emailIcon from "../../assets/email.svg";
@@ -141,6 +141,7 @@ function Login({ layout }) {
     username: "",
     showPassword: false,
   });
+  let history = useHistory();
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
@@ -148,7 +149,6 @@ function Login({ layout }) {
 
   const handleClickShowPassword = () => {
     setValues({ ...values, showPassword: !values.showPassword });
-    console.log();
   };
 
   const handleMouseDownPassword = (event) => {
@@ -164,27 +164,27 @@ function Login({ layout }) {
     setState({ ...state, [event.target.name]: event.target.checked });
   };
 
-  // const handleSubmit = async (event) => {
-  //   event.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-  //   const form = new FormData();
-  //   form.append("username", values.username);
-  //   form.append("password", values.password);
+    try {
+      const response = await axios.post(`/auth/signin`, values, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+      console.log(response.data)
+      localStorage.setItem("accessToken", response.data.accessToken);
+      localStorage.setItem("userId", response.data.appUser.id);
+      localStorage.setItem("currentUser", JSON.stringify(response.data.appUser))
+      history.push('/dashboard');
+      
+    } catch (error) {
+      console.error(error);
+    }
+
     
-
-  //   try {
-  //     const response = await axios.post(`http://localhost:8282/login`, form, {
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       }
-  //     })
-  //     console.log("this is a nice one", response.data);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-
-    
-  // }
+  }
 
   return (
     <Wrapper className="flex">
@@ -210,8 +210,8 @@ function Login({ layout }) {
         <div className="rhs">
           <p className="bold log-title">Login</p>
           <p className="msg">Welcome back! </p>
-          {/* <form action="http://localhost:8282/login" method="post"> */}
-          <form action="http://localhost:8282/login" method="post">
+          
+          <form onSubmit={handleSubmit}>
           <div className="input-container">
             <div className="row-input ">
               <InputField

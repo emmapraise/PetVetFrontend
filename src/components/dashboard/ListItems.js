@@ -47,6 +47,16 @@ export function ListItems() {
           </ListItemLink>
         </Link>
 
+        <Link to="/pets">
+          <ListItemLink
+            className={
+              window.location.pathname === "/pets" ? "active" : ""
+            }
+          >
+            <ListItemText primary="Pets" />
+          </ListItemLink>
+        </Link>
+
         <Link to="/appointments">
           <ListItemLink
             className={
@@ -54,15 +64,6 @@ export function ListItems() {
             }
           >
             <ListItemText primary="Appointments" />
-          </ListItemLink>
-        </Link>
-
- 
-        <Link to="/diagnoses">
-          <ListItemLink
-            className={window.location.pathname === "/diagnoses" ? "active" : ""}
-          >
-            <ListItemText primary="Diagnoses" />
           </ListItemLink>
         </Link>
 

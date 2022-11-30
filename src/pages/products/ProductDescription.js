@@ -202,12 +202,16 @@ function ProductDescription({ match }) {
 			})
 			.catch((error) => {
 				console.log(error);
-			});
+			 });
 	}, []);
 
 	useEffect(async () => {
 		try {
-			const response = await axios.get(`pet/all`);
+			const userId = localStorage.getItem("userId")
+			const token = localStorage.getItem("accessToken")
+			const config = {headers: {Authorization: `Bearer ${token}`}}
+			const response = await axios.get(`pet/owner/${userId}`, );
+			console.log(response.data)
 			setPets(response.data);
 		} catch (error) {
 			console.error(error);

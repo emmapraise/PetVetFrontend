@@ -239,16 +239,16 @@ function NavBar({ searchInput, modalRegister, modalLogin }) {
               <span className="mr-7 link-text">Dashboard</span>{" "}
               <img src={dashboardIcon} alt="dashboardIcon" className="icon" />
             </Link>
-            <Link to="/cart" className="pd-10">
-              <span className="link-text">Bookings</span>{" "}
+            {/* <Link to="/appointments" className="pd-10">
+              <span className="link-text">Appointments</span>{" "}
               <img src={calenderBookings} alt="cartIcon" className="icon w-19" />
-            </Link>
+            </Link> */}
             {modalRegister ? (
               modalRegister
             ) : (
               <>
                 <Link to="/register">
-                  <button className="btn m-10">Register Clinic</button>
+                  <button className="btn m-10">Register</button>
                 </Link>
               </>
             )}

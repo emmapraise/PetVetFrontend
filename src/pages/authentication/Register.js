@@ -3,11 +3,12 @@ import React from "react";
 import authbg from "../../assets/authbg.png";
 import kite from "../../assets/kite.png";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
 import padlock from "../../assets/padlock.svg";
 import emailIcon from "../../assets/email.svg";
+import axios from "axios"
 
 import InputField from "../../components/common/input/InputField";
 import CheckboxInput from "../../components/common/input/CheckboxInput";
@@ -137,14 +138,14 @@ function Register({ layout }) {
     lastName: "",
     password: "",
     password2: "",
-    lname: "",
-    phoneNumber: "",
+    phone: "",
     email: "",
     address: "",
     city: "",
-    referralLink: "",
     showPassword: false,
   });
+  
+  const history = useHistory();
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
@@ -162,11 +163,24 @@ function Register({ layout }) {
   const [state, setState] = React.useState({
     agree: false,
   });
-  const { agree } = state;
 
-  const handleCheckbox = (event) => {
-    setState({ ...state, [event.target.name]: event.target.checked });
-  };
+  const handleSubmit = async() => {
+    delete values.showPassowrd;
+    delete values.password2;
+    try{
+    const response = await axios.post(`owner`, values, {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+    console.log(response.data)
+    history.push('/sent');
+
+  }catch(error) {
+    console.log(error)
+  }
+  }
+
 
   return (
     <Wrapper className="flex">
@@ -197,13 +211,13 @@ function Register({ layout }) {
             <div className="row-input sub-grid grid">
               <InputField
                 label="First Name"
-                value={values.fname}
-                onChange={handleChange("fname")}
+                value={values.firstName}
+                onChange={handleChange("firstName")}
               />
               <InputField
                 label="Last Name"
-                value={values.lname}
-                onChange={handleChange("lname")}
+                value={values.lastName}
+                onChange={handleChange("lastName")}
               />
             </div>
             <div className="row-input sub-grid grid">
@@ -212,22 +226,13 @@ function Register({ layout }) {
                 type="email"
                 value={values.email}
                 onChange={handleChange("email")}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      edge="end"
-                    >
-                      <img src={emailIcon} alt="emailIcon" />{" "}
-                    </IconButton>
-                  </InputAdornment>
-                }
+                
               />
               <InputField
                 label="Phone Number"
                 type="number"
-                value={values.phoneNumber}
-                onChange={handleChange("phoneNumber")}
+                value={values.phone}
+                onChange={handleChange("phone")}
               />
             </div>
 
@@ -284,16 +289,8 @@ function Register({ layout }) {
                 }
               />
             </div>
-            <div className="row-input flex">
-              <CheckboxInput
-                checked={agree}
-                onChange={handleCheckbox}
-                name="agree"
-              />
-              <p className="check-label">I agree to Pet Vet Terms & Condition </p>
-            </div>
             <div className="button">
-              <button type="button">Sign up</button>
+              <button type="button" onClick={handleSubmit}>Sign up</button>
             </div>
           </div>
         </div>

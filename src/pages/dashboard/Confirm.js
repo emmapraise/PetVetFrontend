@@ -4,7 +4,7 @@ import DarkNavBar from "../../components/common/DarkNavBar";
 import styled from "styled-components";
 import naira from "../../assets/naira.svg";
 import cartEmpty from "../../assets/cart.png";
-import calenderBookings from "../../assets/calendar-svgrepo-com.svg";
+import back from "../../assets/backOrange.svg";
 import DashboardLayout from "../../components/layouts/DashboardLayout";
 
 import { Link } from "react-router-dom";
@@ -316,143 +316,59 @@ grid-template-columns:1fr max-content   ;
     align-items: center;
   }
 `;
-function Appointments(props) {
+function Purchases(props) {
 
 const [data, setData] = useState([]);
 
 
-    
 
 useEffect(() => {
   try {
-    const userId = localStorage.getItem("userId")
+    console.log("dgsg")
+    const params = window.location.search;
+    const urlParams = new URLSearchParams(params)
+    const token = urlParams.get("token")
+    console.log(token)
 
-const currentUser = JSON.parse(localStorage.getItem("currentUser"))
-    
-    const getVetAppointment = async (userId) => {
-      console.log("Getting appointment of a vet");
-      const response = await axios.get(`appointment/vet/${userId}`)
-      setData(response.data)
-    }
-
-    const getUserAppointment = async (userId) => {
+    const confirm = async (token) => {
+      try{
+      const response = await axios.get(`/user/register/confirm?token=${token}`)
+      console.log(response.data)
+      }catch(error){
+        console.log(error)
+      }
       
-      const response = await axios.get(`appointment/owner/${userId}`)
-      setData(response.data)
+
     }
-    
-    if (currentUser.roles === "USER") {
-      console.log("for user")
-      getUserAppointment(userId) 
-    } else {
-      getVetAppointment(userId)
-    }
-    
+    confirm(token)
+  
   } catch (error) {
     console.error(error);
   }
 }, []);
 
-const converDate = (date) => {
-  var dateObj = new Date(date);
-  var year = dateObj.getFullYear();
-  var month = dateObj.getMonth();
-  var day = dateObj.getDay();
-  var hrs = dateObj.getHours();
-  var mins = dateObj.getMinutes()
-  return day + "/" + month + "/" + year + " " + hrs+":"+mins;
-}
 
 
   return (
     <Wrapper>
-      {data.length > 0 ? (
-        <DashboardLayout navText="My Appintments">
-          <>
-            <p className="items">Appointment(s) {`(${data.length} Items)`}</p>
-            <>
-              {" "}
-              <div className="titles">
-                <div className="flex first">
-                  {" "}
-                  <p>Vet Clinic</p>
-                </div>
-                <div className="grid">
-                  <div className="flexy flex">
-                    <p>Pet Name</p>
-                    <p>Date</p>
-                    <p>Charge</p>
-                  </div>
-                  <p>Status</p>
-                </div>
-              </div>
-              {data.map(({ vet, pet, date, status }, index) => (
-                <div className="checker-item ">
-                  <div className="scrolly">
-                    <div className=" grid cart-item ">
-                      <div className="rhs bordered">
-                        <div className="p-image">
-                          <img src={vet.logo.path} alt="item" />
-                        </div>
-                        <div className="product-details">
-                          <p className="name bold">{vet.name}</p>
-                        </div>
-                      </div>
-                      <div className="lhs-card h-100 ">
-                        <div className="quantity sub-child flex h-100 bordered">
-                         <p className="quantity">{pet.name}</p>
-                        </div>
-                        <div className="discount-price  sub-child flex h-100 bordered">
-                          <p className=" flex">
-                            
-                            <span className="bold text-13">{converDate(date)}</span>
-                          </p>
-                          
-                        </div>
-                        <div className="sub-child flex h-100 bordered">
-                          <p className="price flex">
-                            <img className="naira" src={naira} alt="naira" />{" "}
-                            <span className="bold text-13">
-                              {vet.price
-                                .toString()
-                                .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")}
-                            </span>
-                          </p>
-                        </div>
-                        <div className="payment flex">
-                          <p className="pay-text">{status}</p>
-                          
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-              
-            </>
-            
-          </>
-        </DashboardLayout>
-      ) : (
-        
-          <DashboardLayout navText="My Appintments">
-          <>
+      
+        <>
           <div className="no-item flex">
-            <img src={calenderBookings} alt="cartEmpty" />
-            <p className="empty-text">You have no Booked Appointment</p>
+            <img src={markgreen} alt="cartEmpty" />
             
+            <p className="already">
+              Procced to Login <Link to="/login">Login</Link>
+            </p>
             <Link to="/">
-              <button className="blue btn">Go Booking</button>
+              <button className="blue btn">Go Home</button>
             </Link>
           </div>
-          </>
-        </DashboardLayout>
-        
-      )}
+        </>
+      
     </Wrapper>
   );
 }
 
-Appointments.propTypes = {};
+Purchases.propTypes = {};
 
-export default Appointments;
+export default Purchases;

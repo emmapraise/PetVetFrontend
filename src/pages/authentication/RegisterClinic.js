@@ -17,7 +17,6 @@ import axios from 'axios';
 import { Button } from '@material-ui/core';
 
 const Wrapper = styled.div`
-	/* min-height: 100vh; */
 	padding: 30px 0;
 	@media screen and (max-width: ${(props) => props.theme.breakpoint.lsm}) {
 		padding: 10px;

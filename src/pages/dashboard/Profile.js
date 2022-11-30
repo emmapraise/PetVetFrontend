@@ -120,7 +120,7 @@ const Wrapper = styled.div`
   }
 `;
 function Profile(props) {
-  const [values, setValues] = React.useState({
+  const [values, setValues] = useState({
     firstName: "",
     lastName: "",
     email: "",
@@ -147,7 +147,7 @@ function Profile(props) {
       <DashboardLayout navText="Profile">
         <div className="with-avatar flex">
           <img src={avatar} alt="avatar" />
-          <p className="title bold">Welcome! James Joe</p>
+          <p className="title bold">Welcome! {values.firstName} {values.lastName}</p>
         </div>
         <div className="action-btns">
           <button className="btn">Upload</button>
