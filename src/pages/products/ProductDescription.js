@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
+// import {useFormik} from 'formik'
 // import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom';
-// import { BrowserRouter as Router, useParams } from "react-router-dom";
+import { useHistory } from 'react-router-dom';
 import ProductPageLayout from '../../components/layouts/ProductPageLayout';
 import styled from 'styled-components';
-import view from '../../assets/view.png';
 import mark from '../../assets/spec.png';
 import InputField from '../../components/common/input/InputField';
 import SelectInput from '../../components/common/input/SelectInput';
@@ -14,6 +13,7 @@ import {
 	faPhone,
 	faEnvelope,
 } from '@fortawesome/free-solid-svg-icons';
+import FormControl from '@material-ui/core/FormControl';
 import axios from 'axios';
 
 export const Wrapper = styled.div`
@@ -143,78 +143,91 @@ export const Wrapper = styled.div`
     margin-bottom: 24px;
 `;
 
-const productView = [
-	{
-		id: 1,
-		view,
-	},
-	{
-		id: 2,
-		view,
-	},
-	{
-		id: 3,
-		view,
-	},
-	{
-		id: 4,
-		view,
-	},
-];
 function ProductDescription({ match }) {
 	// Initialize state
-	const [data, setData] = useState([]);
+	let history = useHistory();
+	const [data, setData] = useState({
+		name: "",
+		price: "",
+		user: {
+			phone: "",
+			email: "",
+		}
+	});
 	const [coverImage, setCoverImage] = useState([]);
 	const [specialties, setSpecialties] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [setError] = useState(null);
-  const [pets, setPets] = useState([]);
+	const [pets, setPets] = useState([]);
 	const [values, setValues] = useState({
-		pet: '',
+		pet: null,
 		date: '',
-		time: '',
 	});
 
 	const handleChange = (prop) => (event) => {
 		setValues({ ...values, [prop]: event.target.value });
 	};
 
+	const handleSubmit = (event) => {
+		event.preventDefault();
+
+		axios
+			.post(
+				`appointment/vet/${match.params.id}/pet/${values.pet}`,
+				{ date: values.date },
+				{
+					headers: {
+						'Content-Type': 'application/json',
+					},
+				}
+			)
+			.then((response) => {
+				console.log(response.data);
+				history.push('/appointments');
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	};
+
 	useEffect(() => {
 		axios
-			.get(`http://localhost:8282/api/vet/${match.params.id}`)
+			.get(`vet/${match.params.id}`)
 			.then((response) => {
 				setIsLoading(true);
 				setData(response.data);
+				console.log(response.data);
 				setSpecialties(response.data.specialties);
-				setCoverImage(response.data.coverImage)
-				console.log(data);
+				setCoverImage(response.data.coverImage);
 			})
 			.catch((error) => {
-				console.error(error);
-				setError(error);
-			});
+				console.log(error);
+			 });
 	}, []);
 
-  useEffect(() => {
-    axios
-    .get(`http://localhost:8282/api/pet/all`)
-    .then((response) => {
-      setIsLoading(true);
-      setPets(response.data);
-    })
-    .catch((error) => {
-      console.log(error);
-      setError(error);
-    });
-  }, []);
-  
+	useEffect(async () => {
+		try {
+			const userId = localStorage.getItem("userId")
+			const token = localStorage.getItem("accessToken")
+			const config = {headers: {Authorization: `Bearer ${token}`}}
+			const response = await axios.get(`pet/owner/${userId}`, );
+			console.log(response.data)
+			setPets(response.data);
+		} catch (error) {
+			console.error(error);
+		}
+	}, []);
 
-  const optionPet = pets.map((pet) => {
-	return {
-		'value': pet.id,
-		'text': pet.name 
-	}
-  })
+	const optionPet = pets.map((pet) => {
+		return {
+			value: pet.id,
+			text: pet.name,
+		};
+	}, []);
+
+	var now = new Date();
+	now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+	const today = now.toISOString().slice(0, 16);
 
 	return (
 		<Wrapper>
@@ -237,71 +250,74 @@ function ProductDescription({ match }) {
 									<p>
 										<FontAwesomeIcon icon={faLocationDot} /> {data.address}
 									</p>
-									<p> 
+									<p>
 										<FontAwesomeIcon icon={faPhone} />{' '}
-										<a href={`tel:+234${data.phone}`}>{data.phone}</a>{' '}
+										<a href={`tel:+234${data.phone}`}>{data?.user.phone}</a>{' '}
 									</p>
 									<p>
 										<FontAwesomeIcon icon={faEnvelope} />{' '}
-										<a href={`mailto:${data.email}`}>{data.email}</a>
+										<a href={`mailto:${data.email}`}>{data?.user.email}</a>
 									</p>
 								</div>
 
 								<div className="specification checker-item">
 									<h4 className="bold spec">Services offered</h4>
 									<div className="spec-details">
-                  {specialties.map((elem) => (
-										<>
-											<p className="spec-list flex">
-                      <img src={mark} alt="mark" />
-                      <span>{elem.name}</span></p>
-										</>
-									))}
+										{specialties.map((elem, index) => (
+											<>
+												<p className="spec-list flex" key={index}>
+													<img src={mark} alt="mark" />
+													<span>{elem.name}</span>
+												</p>
+											</>
+										))}
 									</div>
 								</div>
 
 								<div className="specification">
-									<h4 className="bold spec">Book A Session</h4>
-									<div className="spec-details">
-										<div className="checker-item">
-											<label htmlFor="Pet">Choose a Pet</label>
-											<div className="select sub-child flex h-100 bordered">
-												<SelectInput
-													options={optionPet}
-													value={values.pet}
-													onChange={setValues}
-												/>
+									<form onSubmit={handleSubmit}>
+										<h4 className="bold spec">Book A Session</h4>
+										<div className="spec-details">
+											<div className="checker-item">
+												<label htmlFor="Pet">Choose a Pet</label>
+												<div className="select sub-child flex h-100 bordered">
+													<SelectInput
+														label="Pets"
+														options={optionPet}
+														value={values.pet}
+														onChange={handleChange('pet')}
+													/>
+												</div>
+											</div>
+											<div className="checker-item">
+												{/* <InputField
+													type="datetime-local"
+													helperText="Book Appointment"
+													value={values.date}
+													min="2022-11-26T00:00"
+													onChange={handleChange('date')}
+												/> */}
+												<FormControl variant="outlined">
+													<label for="date">Date and Time of Appointment </label>
+													<input
+														type="datetime-local"
+														name=""
+														id="date"
+														value={values.date}
+														min={today}
+														onChange={handleChange('date')}
+													/>
+												</FormControl>
 											</div>
 										</div>
-										<div className="checker-item">
-											<InputField
-												helperText={'Choose date'}
-												value={values.date}
-												type="date"
-												onChange={handleChange('date')}
-											/>
-										</div>
-										<div className="checker-item">
-											<InputField
-												value={values.time}
-												type="time"
-												onChange={handleChange('time')}
-												helperText="Choose time"
-											/>
-										</div>
-									</div>
-									<div className="buttons">
-										<Link to="/cart">
-											<button className="orange" type="button">
+										<div className="buttons">
+											{/* <Link to="/cart"> */}
+											<button className="orange" type="submit">
 												Book Appointment
 											</button>
-										</Link>
-										{/* <Link to="/">
-                    <button className="white" type="button">
-                      Continue Shopping
-                    </button>
-                  </Link> */}
-									</div>
+											{/* </Link> */}
+										</div>
+									</form>
 								</div>
 							</div>
 						</div>

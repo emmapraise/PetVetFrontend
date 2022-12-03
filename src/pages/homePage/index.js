@@ -71,26 +71,7 @@ function HomePage(props) {
 		<Wrapper>
 			<>
 				<NavBar
-					searchInput={
-						<div className="search-box-area">
-							<div className="flex">
-								<div className="search-box">
-									<input
-										type="text"
-										name="search"
-										id="search"
-										placeholder="Search Vet Clinics"
-										value={q}
-										onChange={(e) => setQ(e.target.value)}
-									/>
-								</div>
-
-								<button type="submit">
-									<img src={searchIcon} alt="search" />
-								</button>
-							</div>
-						</div>
-					}
+					
 					modalRegister={
 						<Modal
 							onClose={handleClose}
@@ -98,7 +79,7 @@ function HomePage(props) {
 							trigger={
 								<div>
 									<button className=" orange btn" onClick={handleOpen}>
-										Clinic
+										Register
 									</button>
 								</div>
 							}

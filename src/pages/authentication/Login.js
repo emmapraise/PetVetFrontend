@@ -3,13 +3,15 @@ import React from "react";
 import authbg from "../../assets/authbg.png";
 import kite from "../../assets/kite.png";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import InputField from "../../components/common/input/InputField";
 import padlock from "../../assets/padlock.svg";
 import emailIcon from "../../assets/email.svg";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
 import CheckboxInput from "../../components/common/input/CheckboxInput";
+import axios from "axios";
+
 const Wrapper = styled.div`
   /* min-height: 100vh; */
   padding: 30px 0;
@@ -136,9 +138,10 @@ const Wrapper = styled.div`
 function Login({ layout }) {
   const [values, setValues] = React.useState({
     password: "",
-    email: "",
+    username: "",
     showPassword: false,
   });
+  let history = useHistory();
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
@@ -146,7 +149,6 @@ function Login({ layout }) {
 
   const handleClickShowPassword = () => {
     setValues({ ...values, showPassword: !values.showPassword });
-    console.log();
   };
 
   const handleMouseDownPassword = (event) => {
@@ -161,6 +163,28 @@ function Login({ layout }) {
   const handleCheckbox = (event) => {
     setState({ ...state, [event.target.name]: event.target.checked });
   };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      const response = await axios.post(`/auth/signin`, values, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+      console.log(response.data)
+      localStorage.setItem("accessToken", response.data.accessToken);
+      localStorage.setItem("userId", response.data.appUser.id);
+      localStorage.setItem("currentUser", JSON.stringify(response.data.appUser))
+      history.push('/dashboard');
+      
+    } catch (error) {
+      console.error(error);
+    }
+
+    
+  }
 
   return (
     <Wrapper className="flex">
@@ -186,13 +210,16 @@ function Login({ layout }) {
         <div className="rhs">
           <p className="bold log-title">Login</p>
           <p className="msg">Welcome back! </p>
+          
+          <form onSubmit={handleSubmit}>
           <div className="input-container">
             <div className="row-input ">
               <InputField
                 label="Email"
                 type="email"
-                value={values.email}
-                onChange={handleChange("email")}
+                name="username"
+                value={values.username}
+                onChange={handleChange("username")}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
@@ -223,6 +250,7 @@ function Login({ layout }) {
                 type={values.showPassword ? "text" : "password"}
                 value={values.password}
                 onChange={handleChange("password")}
+                name="password"
               />
             </div>
 
@@ -240,9 +268,10 @@ function Login({ layout }) {
               </Link>
             </div>
             <div className="button">
-              <button type="button">Sign in</button>
+              <button type="submit">Sign in</button>
             </div>
           </div>
+          </form>
         </div>
       </div>
     </Wrapper>

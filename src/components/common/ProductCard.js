@@ -63,7 +63,7 @@ export const Wrapper = styled.div`
 function ProductCard({ bg, pName, price, to, like, addToCart }) {
   return (
     <Wrapper>
-      <Link to={`/products/${to}`}>
+      <Link to={`/vet/${to}`}>
         <div className="product-card" >
           {/* <div
             className="card-image "

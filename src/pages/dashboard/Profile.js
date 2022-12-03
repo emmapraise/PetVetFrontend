@@ -1,11 +1,10 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 // import PropTypes from "prop-types";
 import styled from "styled-components";
 import InputField from "../../components/common/input/InputField";
-import insta from "../../assets/insta.png";
-import facebook from "../../assets/facebook.png";
 import avatar from "../../assets/avatar.png";
 import DashboardLayout from "../../components/layouts/DashboardLayout";
+import axios from "axios";
 
 const Wrapper = styled.div`
   main {
@@ -121,7 +120,7 @@ const Wrapper = styled.div`
   }
 `;
 function Profile(props) {
-  const [values, setValues] = React.useState({
+  const [values, setValues] = useState({
     firstName: "",
     lastName: "",
     email: "",
@@ -129,6 +128,16 @@ function Profile(props) {
     address: "",
     city: "",
   });
+
+  useEffect(async () => {
+    try {
+      const response = await axios.get(`user/1`)
+      console.log(response.data)
+      setValues(response.data)
+    } catch (error) {
+      console.error(error)
+    }
+  }, [])
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
@@ -138,7 +147,7 @@ function Profile(props) {
       <DashboardLayout navText="Profile">
         <div className="with-avatar flex">
           <img src={avatar} alt="avatar" />
-          <p className="title bold">Welcome! James Joe</p>
+          <p className="title bold">Welcome! {values.firstName} {values.lastName}</p>
         </div>
         <div className="action-btns">
           <button className="btn">Upload</button>

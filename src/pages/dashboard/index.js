@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 // import PropTypes from "prop-types";
 import styled from 'styled-components';
 import whiteKite from '../../assets/whiteKite.png';
 import wallet from '../../assets/wallet.png';
+import calenderBookings from "../../assets/calendar-svgrepo-com.svg";
 import DashboardLayout from '../../components/layouts/DashboardLayout';
 import { Link } from 'react-router-dom';
+import axios from "axios"
 
 const Wrapper = styled.div`
 	.greet {
@@ -96,11 +98,33 @@ const Wrapper = styled.div`
 		background-color: ${(props) => props.theme.color.white};
 	}
 `;
-function index(props) {
+
+const user = JSON.parse(localStorage.getItem("currentUser"));
+
+
+
+
+function Dashboard(props) {
+
+	const [data, setData] = useState([]);
+
+	useEffect(async () => {
+		try{
+			const response = await axios.get(`/dashboard/user/${user.id}`)
+			setData(response.data)
+			console.log(response.data)
+		} catch (error){
+			console.error(error)
+		}
+	}, [])
+	
+	
+	
+
 	return (
 		<Wrapper>
 			<DashboardLayout navText="My Dashboard">
-				<p className="greet bold">Hello, James Joe</p>
+				<p className="greet bold">Hello, {user.firstName} {user.lastName}</p>
 				<div className="grid big-cards">
 					<div>
 						{' '}
@@ -115,7 +139,7 @@ function index(props) {
 						<Link to="/referrals">
 							<div className="small-card elevate first j-btw flex j-btw">
 								<p className="text bold">My Pets</p>
-								<p className="text ">10</p>
+								<p className="text ">{data.petCount}</p>
 							</div>
 						</Link>
 					</div>
@@ -123,18 +147,18 @@ function index(props) {
 						<Link to="/wallet">
 							<div className="big-card elevate second">
 								<div className="image flex">
-									<img src={wallet} alt="" />
+									<img src={calenderBookings} alt="" />
 								</div>
 								<p className="text bold">Appointments</p>
 								<div className="flex amount">
-									<p className="text">30</p>
+									<p className="text"></p>
 								</div>
 							</div>
 						</Link>
-						<Link to="/purchases">
+						<Link to="/appointments">
 							<div className=" small-card elevate second flex j-btw">
-								<p className="text bold">My Purchases</p>
-								<p className="text ">10</p>
+								<p className="text bold">Total Appointments</p>
+								<p className="text ">{data.appointmentCount}</p>
 							</div>
 						</Link>
 					</div>
@@ -158,6 +182,6 @@ function index(props) {
 	);
 }
 
-index.propTypes = {};
+Dashboard.propTypes = {};
 
-export default index;
+export default Dashboard;
