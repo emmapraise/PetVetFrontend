@@ -28,14 +28,15 @@ const Wrapper = styled.div`
 	}
 `;
 
-function TextArea({ label, onChange, value }) {
+function TextArea({ label, onChange, value, required}) {
 	return (
 		<Wrapper>
 			<TextField
 				id="outlined-multiline-static"
 				label={label}
 				multiline
-				rows={4}
+				rows={1}
+				required={required}
 				value={value}
 				onChange={onChange}
                 variant="outlined"
@@ -46,6 +47,7 @@ function TextArea({ label, onChange, value }) {
 TextArea.prototype = {
 	label: PropTypes.string,
 	value: PropTypes.string,
+	required: PropTypes.bool,
 	onChange: PropTypes.func,
 };
 

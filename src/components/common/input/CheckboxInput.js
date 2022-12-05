@@ -74,6 +74,6 @@ export default function CheckboxInput({ checked,required, onChange, name }) {
   );
 }
 CheckboxInput.propTypes = {
-  required: PropTypes.string,
+  required: PropTypes.bool,
 
 };

@@ -29,13 +29,14 @@ const Wrapper = styled.div`
 }
 `;
 
-function Tag({label, placeholder, options}){
+function Tag({label, placeholder, options, required}){
     return (
     <Wrapper>
         <Autocomplete
         multiple
         id="tags-standard"
         options={options}
+        required={required}
         getOptionLabel={(option) => option.name}
         renderInput={(params) => (
             <TextField
@@ -51,6 +52,7 @@ function Tag({label, placeholder, options}){
 }
 Tag.prototype = {
     label: PropTypes.string,
+    required: PropTypes.bool,
     placeholder: PropTypes.string,
     options: PropTypes.array,
 };

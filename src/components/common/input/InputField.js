@@ -35,6 +35,7 @@ function InputField({
   type,
   label,
   name,
+  required,
   endAdornment,
   startAdornment,
   onChange,
@@ -48,6 +49,7 @@ function InputField({
         <OutlinedInput
           type={type ? type : "text"}
           value={value}
+          required={required}
           onChange={onChange}
           name={name}
           startAdornment={startAdornment}
@@ -66,6 +68,7 @@ InputField.propTypes = {
   helperText: PropTypes.string,
   label: PropTypes.string,
   name: PropTypes.string,
+  required: PropTypes.bool,
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func,
   endAdornment: PropTypes.object,

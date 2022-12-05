@@ -323,7 +323,8 @@ grid-template-columns:1fr max-content   ;
 function Pets(props) {
 
 const [data, setData] = useState([]);  
-const [open, setOpen] = React.useState(false);
+const [open, setOpen] = useState(false);
+const [isLoading, setIsLoading] = useState(true)
 
 	const handleOpen = () => {
 		setOpen(true);
@@ -334,6 +335,7 @@ const [open, setOpen] = React.useState(false);
 	};  
 
 useEffect(() => {
+  setIsLoading(true)
   try {
     const userId = localStorage.getItem("userId")
 
@@ -341,6 +343,7 @@ useEffect(() => {
       const response = await axios.get(`pet/owner/${userId}`)
 
       setData(response.data)
+      setIsLoading(false)
     }
     getPetsByUser(userId)
   } catch (error) {
@@ -353,7 +356,7 @@ useEffect(() => {
       {data.length > 0 ? (
         <DashboardLayout navText="My Pets">
           <>
-            <p className="items">Pet(s) {`(${data.length} Items)`}</p>
+            <p className="items"> {`${data.length} Pets`}</p>
             <>
               {" "}
               <Modal

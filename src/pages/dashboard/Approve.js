@@ -332,7 +332,7 @@ useEffect(() => {
     const confirm = async (token) => {
       try{
         
-      const response = await axios.get(`/appointment/${token}/accept?status=Status.ACCEPTED`)
+      const response = await axios.get(`/appointment/${token}/accept?status=ACCEPTED`)
       console.log(response.data)
       }catch(error){
         console.log(error)

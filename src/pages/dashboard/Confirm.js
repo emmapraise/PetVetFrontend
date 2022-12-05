@@ -13,7 +13,6 @@ import markgreen from "../../assets/markgreen.png";
 import axios from "axios";
 
 const Wrapper = styled.div`
-
 main{
   background-color: ${(props) => props.theme.color.ui_02};
   }

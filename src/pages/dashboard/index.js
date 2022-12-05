@@ -7,6 +7,7 @@ import calenderBookings from "../../assets/calendar-svgrepo-com.svg";
 import DashboardLayout from '../../components/layouts/DashboardLayout';
 import { Link } from 'react-router-dom';
 import axios from "axios"
+import Loading from '../../components/common/Loading';
 
 const Wrapper = styled.div`
 	.greet {
@@ -99,44 +100,45 @@ const Wrapper = styled.div`
 	}
 `;
 
-const user = JSON.parse(localStorage.getItem("currentUser"));
-
-
-
 
 function Dashboard(props) {
 
 	const [data, setData] = useState([]);
+	const [isLoading, setIsLoading] = useState(true)
+	const user = JSON.parse(localStorage.getItem("user"));
 
 	useEffect(async () => {
+		setIsLoading(true)
 		try{
 			const response = await axios.get(`/dashboard/user/${user.id}`)
 			setData(response.data)
 			console.log(response.data)
+			setIsLoading(false)
 		} catch (error){
 			console.error(error)
 		}
-	}, [])
-	
-	
-	
+	}, [setData])
 
 	return (
 		<Wrapper>
+			{isLoading ? (
+				<Loading />
+			): (
+
 			<DashboardLayout navText="My Dashboard">
 				<p className="greet bold">Hello, {user.firstName} {user.lastName}</p>
 				<div className="grid big-cards">
 					<div>
 						{' '}
-						<Link to="/purchases">
+						<Link to="/appointments">
 							<div className="big-card elevate first">
 								<div className="image flex">
 									<img src={whiteKite} alt="" />
 								</div>
-								<p className="text bold">Appointment</p>
+								<p className="text bold">Pets</p>
 							</div>
 						</Link>
-						<Link to="/referrals">
+						<Link to="/pets">
 							<div className="small-card elevate first j-btw flex j-btw">
 								<p className="text bold">My Pets</p>
 								<p className="text ">{data.petCount}</p>
@@ -163,6 +165,7 @@ function Dashboard(props) {
 						</Link>
 					</div>
 				</div>
+				
 
 				<div className="purchase-lists">
 					<p className="title bold">My Pets</p>
@@ -178,6 +181,8 @@ function Dashboard(props) {
 					</div>
 				</div>
 			</DashboardLayout>
+			)}
+
 		</Wrapper>
 	);
 }

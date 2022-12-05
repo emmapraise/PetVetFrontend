@@ -130,8 +130,9 @@ function Profile(props) {
   });
 
   useEffect(async () => {
+    const user = JSON.parse(localStorage.getItem("user"))
     try {
-      const response = await axios.get(`user/1`)
+      const response = await axios.get(`user/${user.id}`)
       console.log(response.data)
       setValues(response.data)
     } catch (error) {

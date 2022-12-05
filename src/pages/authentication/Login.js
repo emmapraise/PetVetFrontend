@@ -1,5 +1,4 @@
 import React from "react";
-// import PropTypes from "prop-types";
 import authbg from "../../assets/authbg.png";
 import kite from "../../assets/kite.png";
 import styled from "styled-components";
@@ -173,10 +172,9 @@ function Login({ layout }) {
           'Content-Type': 'application/json',
         }
       })
-      console.log(response.data)
       localStorage.setItem("accessToken", response.data.accessToken);
       localStorage.setItem("userId", response.data.appUser.id);
-      localStorage.setItem("currentUser", JSON.stringify(response.data.appUser))
+      localStorage.setItem("user", JSON.stringify(response.data.appUser))
       history.push('/dashboard');
       
     } catch (error) {
@@ -217,6 +215,7 @@ function Login({ layout }) {
               <InputField
                 label="Email"
                 type="email"
+                required={true}
                 name="username"
                 value={values.username}
                 onChange={handleChange("username")}
@@ -235,6 +234,7 @@ function Login({ layout }) {
             <div>
               <InputField
                 label="Password"
+                required={true}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton

@@ -3,10 +3,11 @@ import React from 'react';
 import authbg from '../../assets/authbg.png';
 import kite from '../../assets/kite.png';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
 import emailIcon from '../../assets/email.svg';
+import padlock from '../../assets/padlock.svg';
 
 import InputField from '../../components/common/input/InputField';
 import CheckboxInput from '../../components/common/input/CheckboxInput';
@@ -136,36 +137,38 @@ const Wrapper = styled.div`
 	}
 `;
 function Register({ layout }) {
-  const [isLoading, setIsLoading] = useState(true)
-  const [setError] = useState(null)
+	const [isLoading, setIsLoading] = useState(true);
+	const [setError] = useState(null);
 	const [values, setValues] = useState({
 		bisName: '',
 		description: '',
 		phoneNumber: '',
 		email: '',
 		address: '',
+		coverImage: null,
 		city: '',
 		price: '',
-    services: [],
+		services: [],
 	});
 
-  const [services, setServices] = useState([ ]);
+	const history = useHistory();
 
-  useEffect(() => {
-    axios
-    .get(`http://localhost:8282/api/specialty/all`)
-    .then((response) => {
-      setIsLoading(true)
-      setServices(response.data)
-      console.log(services);
-    })
-    .catch((error) => {
-      setError(error)
-      console.error(error);
-    });
+	const [services, setServices] = useState([]);
 
-  }, [])
-  
+	useEffect(() => {
+		axios
+			.get(`http://localhost:8282/api/specialty/all`)
+			.then((response) => {
+				setIsLoading(true);
+				setServices(response.data);
+				setIsLoading(false);
+				console.log(services);
+			})
+			.catch((error) => {
+				setError(error);
+				console.error(error);
+			});
+	}, []);
 
 	const handleChange = (prop) => (event) => {
 		setValues({ ...values, [prop]: event.target.value });
@@ -178,6 +181,24 @@ function Register({ layout }) {
 
 	const handleMouseDownPassword = (event) => {
 		event.preventDefault();
+	};
+
+	const handleSubmit = async () => {
+		// delete values.showPassowrd;
+		// delete values.password2;
+		alert(values)
+		console.log(values)
+		// try {
+		// 	const response = await axios.post(`owner`, values, {
+		// 		headers: {
+		// 			'Content-Type': 'application/json',
+		// 		},
+		// 	});
+		// 	console.log(response.data);
+		// 	history.push('/sent');
+		// } catch (error) {
+		// 	console.log(error);
+		// }
 	};
 
 	const [state, setState] = React.useState({
@@ -196,14 +217,13 @@ function Register({ layout }) {
 					''
 				) : (
 					<div className="lhs">
-						
 						<div className="lhs-content">
 							<Link to="/">
 								<img src={kite} alt="kite" />
 							</Link>
-							<div className="already">Visit Your Dashboard?</div>
-							<Link to="/dashboard" className="log-btn">
-								<button type="button">Dashboard</button>
+							<div className="already">Already have an Account?</div>
+							<Link to="/login" className="log-btn">
+								<button type="button">Login</button>
 							</Link>
 						</div>
 					</div>
@@ -214,88 +234,153 @@ function Register({ layout }) {
 					<p className="msg">
 						Register your Vet Clinic here and stay connected
 					</p>
-					<div className="input-container">
-						<div className="row-input sub-grid grid">
-							<InputField
-								label="Business Name"
-								value={values.bisName}
-								onChange={handleChange('bisName')}
-							/>
-							<InputField
-								label="Email"
-								type="email"
-								value={values.email}
-								onChange={handleChange('email')}
-								endAdornment={
-									<InputAdornment position="end">
-										<IconButton
-											aria-label="toggle password visibility"
-											edge="end"
-										>
-											<img src={emailIcon} alt="emailIcon" />{' '}
-										</IconButton>
-									</InputAdornment>
-								}
-							/>
-						</div>
-						<div className="row-input sub-grid grid">
-							<InputField
-								label="Phone Number"
-								type="number"
-								value={values.phoneNumber}
-								onChange={handleChange('phoneNumber')}
-							/>
+					<form >
+						<div className="input-container">
+							<div className="row-input sub-grid grid">
+								<InputField
+									label="First Name"
+									value={values.firstName}
+									required={true}
+									onChange={handleChange('firstName')}
+								/>
+								<InputField
+									label="Last Name"
+									value={values.lastName}
+									required={true}
+									onChange={handleChange('lastName')}
+								/>
+							</div>
+							<div className="row-input sub-grid grid">
+								<InputField
+									label="Password"
+									required={true}
+									endAdornment={
+										<InputAdornment position="end">
+											<IconButton
+												aria-label="toggle password visibility"
+												onClick={handleClickShowPassword}
+												onMouseDown={handleMouseDownPassword}
+												edge="end"
+											>
+												<img src={padlock} alt="padlock" />{' '}
+											</IconButton>
+										</InputAdornment>
+									}
+									type={values.showPassword ? 'text' : 'password'}
+									value={values.password}
+									onChange={handleChange('password')}
+								/>
 
-							<InputField
-								label="Price"
-								type="number"
-								value={values.price}
-                startAdornment={<InputAdornment position='start'>₦</InputAdornment>}
-								onChange={handleChange('price')}
-							/>
-						</div>
+								<InputField
+									label="Confirm Password"
+									required={true}
+									type={values.showPassword ? 'text' : 'password'}
+									value={values.password2}
+									onChange={handleChange('password2')}
+									endAdornment={
+										<InputAdornment position="end">
+											<IconButton
+												aria-label="toggle password visibility"
+												onClick={handleClickShowPassword}
+												onMouseDown={handleMouseDownPassword}
+												edge="end"
+											>
+												<img src={padlock} alt="padlock" />{' '}
+											</IconButton>
+										</InputAdornment>
+									}
+								/>
+							</div>
+							<div className="row-input sub-grid grid">
+								<InputField
+									label="Business Name"
+									required={true}
+									value={values.bisName}
+									onChange={handleChange('bisName')}
+								/>
+								<InputField
+									label="Email"
+									type="email"
+									required={true}
+									value={values.email}
+									onChange={handleChange('email')}
+									endAdornment={
+										<InputAdornment position="end">
+											<IconButton
+												aria-label="toggle password visibility"
+												edge="end"
+											>
+												<img src={emailIcon} alt="emailIcon" />{' '}
+											</IconButton>
+										</InputAdornment>
+									}
+								/>
+							</div>
+							<div className="row-input sub-grid grid">
+								<InputField
+									label="Phone Number"
+									type="number"
+									required={true}
+									value={values.phoneNumber}
+									onChange={handleChange('phoneNumber')}
+								/>
 
-						<div className="row-input sub-grid grid">
-              
-              <Tag 
-              label="Services"
-              placeholder="Services"
-              options={services}
-              />
+								<InputField
+									label="Price"
+									type="number"
+									required={true}
+									value={values.price}
+									startAdornment={
+										<InputAdornment position="start">₦</InputAdornment>
+									}
+									onChange={handleChange('price')}
+								/>
+							</div>
 
-              <Button variant='contained' component='label'>
-                Upload Business Image
-                <input hidden accept="image/*" multiple type="file" />
-              </Button>
+							<div className="row-input sub-grid grid">
+								<Tag
+									label="Services"
+									placeholder="Services"
+									options={services}
+									value={values.services}
+									onChange={handleChange('services')}
+								/>
 
+								<Button variant="contained" component="label">
+									Upload Business Image
+									<input hidden accept="image/*" multiple type="file" onChange={handleChange('coverImage')}/>
+								</Button>
+							</div>
+							<div className="row-input sub-grid grid">
+								<TextArea
+									label="Description"
+									required={true}
+									value={values.description}
+									onChange={handleChange('description')}
+								/>
+								<TextArea
+									label="Address"
+									required={true}
+									value={values.address}
+									onChange={handleChange('address')}
+								/>
+							</div>
+							<div className="row-input flex">
+								<CheckboxInput
+									checked={agree}
+									required={true}
+									onChange={handleCheckbox}
+									name="agree"
+								/>
+								<p className="check-label">
+									I agree to Pet Vet Terms & Condition{' '}
+								</p>
+							</div>
+							<div className="button">
+								<button type="button" onClick={handleSubmit}>Submit</button>
+							</div>
 						</div>
-						<div className="row-input sub-grid grid">
-							<TextArea
-								label="Description"
-								value={values.description}
-								onChange={handleChange('description')}
-							/>
-              <TextArea
-								label="Address"
-								value={values.address}
-								onChange={handleChange('address')}
-							/>
-
-						</div>
-						<div className="row-input flex">
-							<CheckboxInput
-								checked={agree}
-								onChange={handleCheckbox}
-								name="agree"
-							/>
-							<p className="check-label">
-								I agree to Pet Vet Terms & Condition{' '}
-							</p>
-						</div>
-						<div className="button">
-							<button type="button">Submit</button>
-						</div>
-					</div>
+					</form>
 				</div>
 			</div>
 		</Wrapper>
