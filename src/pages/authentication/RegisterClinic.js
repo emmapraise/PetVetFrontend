@@ -140,9 +140,12 @@ function Register({ layout }) {
 	const [isLoading, setIsLoading] = useState(true);
 	const [setError] = useState(null);
 	const [values, setValues] = useState({
-		bisName: '',
+		firstName: '',
+		lastName:'',
+		password:'',
+		name: '',
 		description: '',
-		phoneNumber: '',
+		phone: '',
 		email: '',
 		address: '',
 		coverImage: null,
@@ -150,7 +153,6 @@ function Register({ layout }) {
 		price: '',
 		services: [],
 	});
-
 	const history = useHistory();
 
 	const [services, setServices] = useState([]);
@@ -169,7 +171,7 @@ function Register({ layout }) {
 				console.error(error);
 			});
 	}, []);
-
+	const newServices = [values.services];
 	const handleChange = (prop) => (event) => {
 		setValues({ ...values, [prop]: event.target.value });
 	};
@@ -186,8 +188,8 @@ function Register({ layout }) {
 	const handleSubmit = async () => {
 		// delete values.showPassowrd;
 		// delete values.password2;
-		alert(values)
-		console.log(values)
+		
+		console.log(values);
 		// try {
 		// 	const response = await axios.post(`owner`, values, {
 		// 		headers: {
@@ -234,7 +236,7 @@ function Register({ layout }) {
 					<p className="msg">
 						Register your Vet Clinic here and stay connected
 					</p>
-					<form >
+					<form>
 						<div className="input-container">
 							<div className="row-input sub-grid grid">
 								<InputField
@@ -295,8 +297,8 @@ function Register({ layout }) {
 								<InputField
 									label="Business Name"
 									required={true}
-									value={values.bisName}
-									onChange={handleChange('bisName')}
+									value={values.name}
+									onChange={handleChange('name')}
 								/>
 								<InputField
 									label="Email"
@@ -321,8 +323,8 @@ function Register({ layout }) {
 									label="Phone Number"
 									type="number"
 									required={true}
-									value={values.phoneNumber}
-									onChange={handleChange('phoneNumber')}
+									value={values.phone}
+									onChange={handleChange('phone')}
 								/>
 
 								<InputField
@@ -343,12 +345,20 @@ function Register({ layout }) {
 									placeholder="Services"
 									options={services}
 									value={values.services}
-									onChange={handleChange('services')}
+									onChange={(_, value) =>
+										setValues({ ...values, services: value.map((item) => item.id) })
+									}
 								/>
 
 								<Button variant="contained" component="label">
 									Upload Business Image
-									<input hidden accept="image/*" multiple type="file" onChange={handleChange('coverImage')}/>
+									<input
+										hidden
+										accept="image/*"
+										multiple
+										type="file"
+										onChange={handleChange('coverImage')}
+									/>
 								</Button>
 							</div>
 							<div className="row-input sub-grid grid">
@@ -377,7 +387,9 @@ function Register({ layout }) {
 								</p>
 							</div>
 							<div className="button">
-								<button type="button" onClick={handleSubmit}>Submit</button>
+								<button type="button" onClick={handleSubmit}>
+									Submit
+								</button>
 							</div>
 						</div>
 					</form>

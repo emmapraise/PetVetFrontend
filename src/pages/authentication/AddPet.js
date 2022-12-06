@@ -147,6 +147,9 @@ function AddPet({ layout }) {
 		setValues({ ...values, [prop]: event.target.value });
 	};
 	const userId = localStorage.getItem('userId');
+  var now = new Date();
+	now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+	const today = now.toISOString().slice(0, 16);
 
 	const handleNewPet = async () => {
 		const postData = { name: values.name, birthdate: values.birthdate };
